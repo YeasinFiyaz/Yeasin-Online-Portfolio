@@ -1,0 +1,72 @@
+[
+  {
+    "title": "AI-Driven Data Analysis of Post-COVID Implications on Cancer Patients",
+    "period": "01/2023 - Present",
+    "short": "ML/DL pipelines for cancer classification using medical imaging and clinical data with explainable AI.",
+    "tags": ["AI", "ML/DL", "Explainable AI", "Medical"],
+    "github": "",
+    "demo": "",
+    "image": "./assets/img/proj-2.jpg",
+    "featured": true
+  },
+  {
+    "title": "Joint Segmentation and Classification of Brain Tumors",
+    "period": "2026",
+    "short": "Deep learning system for brain tumor MRI segmentation and classification using U-Net and Attention U-Net.",
+    "tags": ["Deep Learning", "U-Net", "MRI", "Segmentation"],
+    "github": "",
+    "demo": "",
+    "image": "./assets/img/joint_segmentation and classification.jpg",
+    "featured": true
+  },
+  {
+    "title": "MiniVSFS - A C based VSFS Image Generator",
+    "period": "2025",
+    "short": "C programs to create raw disk images and inject files into a MiniVSFS filesystem.",
+    "tags": ["C", "Filesystem", "Systems"],
+    "github": "",
+    "demo": "",
+    "image": "./assets/img/Minivsfs.jpg",
+    "featured": true
+  },
+  {
+    "title": "MathaNoshto Compiler",
+    "period": "10/2025 - 01/2026",
+    "short": "A custom compiler in C, covering lexical analysis, parsing, and code generation.",
+    "tags": ["Compiler", "C", "Parsing", "Codegen"],
+    "github": "",
+    "demo": "",
+    "image": "./assets/img/compiler.jpg",
+    "featured": true
+  },
+  {
+    "title": "Travel Booking Website — Bus Lagbe?",
+    "period": "12/2024 - 01/2025",
+    "short": "A responsive travel booking platform with secure payments using Django, Bootstrap, and DB (MySQL/MongoDB).",
+    "tags": ["Django", "Bootstrap", "Payments", "Web"],
+    "github": "",
+    "demo": "",
+    "image": "./assets/img/proj-1.jpg",
+    "featured": true
+  },
+  {
+    "title": "Catch the Diamonds! — 2D OpenGL Game",
+    "period": "05/2025",
+    "short": "Interactive 2D OpenGL game using GL_POINTS and midpoint algorithms with real-time collision and scoring.",
+    "tags": ["OpenGL", "Game", "C/C++"],
+    "github": "",
+    "demo": "",
+    "image": "./assets/img/catch_the_diamonds.jpg",
+    "featured": true
+  },
+  {
+    "title": "Compatible Blind Stick",
+    "period": "2025",
+    "short": "Low-cost blind stick sensors to detect obstacles and assist safe navigation.",
+    "tags": ["IoT", "Sensors", "Accessibility"],
+    "github": "",
+    "demo": "",
+    "image": "./assets/img/blind_stick.jpg",
+    "featured": false
+  }
+]
