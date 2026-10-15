@@ -4,43 +4,47 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Yeasin Fiyaz | Portfolio</title>
+  <meta name="description" content="Yeasin Fiyaz — CSE graduate from BRAC University. Software developer, AI/ML enthusiast and former Vice President of BUCLC. Projects, experience and contact." />
+  <meta name="theme-color" content="#05070F" />
+  <meta property="og:title" content="Yeasin Fiyaz | Portfolio" />
+  <meta property="og:description" content="Software developer & AI/ML enthusiast from Dhaka, Bangladesh." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="./assets/img/profile.jpg" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cdefs%3E%3ClinearGradient id=%27g%27 x1=%270%27 x2=%271%27%3E%3Cstop stop-color=%27%238B5CF6%27/%3E%3Cstop offset=%271%27 stop-color=%27%2322D3EE%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%2764%27 height=%2764%27 rx=%2714%27 fill=%27url(%23g)%27/%3E%3Ctext x=%2732%27 y=%2742%27 font-size=%2728%27 font-family=%27Arial%27 font-weight=%27bold%27 fill=%27%230B1020%27 text-anchor=%27middle%27%3EYF%3C/text%3E%3C/svg%3E" />
 
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
-  <!-- AOS animation -->
-  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet"/>
-
-  <!-- Counter -->
-  <script src="https://cdn.jsdelivr.net/npm/@srexi/purecounterjs/dist/purecounter_vanilla.js"></script>
-
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="./css/style.css" />
 </head>
 
 <body>
+  <div class="bg-aurora"><span></span><span></span><span></span></div>
+  <div class="bg-grid"></div>
+  <div class="cursor-glow"></div>
+  <div class="scroll-progress"></div>
+
   <!-- NAV -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top nav-blur">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="./index.html">Yeasin Fiyaz</a>
+      <a class="navbar-brand" href="./index.html"><span class="brand-dot">YF</span>Yeasin Fiyaz</a>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      
 
       <div class="collapse navbar-collapse" id="navMenu">
-        <ul class="navbar-nav ms-auto gap-1">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
           <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
           <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
           <li class="nav-item"><a class="nav-link" href="#experience">Experience</a></li>
           <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
           <li class="nav-item"><a class="nav-link" href="./awards.html">Awards</a></li>
-          <li class="nav-item"><a class="nav-link" href="./blog.html">My Blog</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contact">Contacts</a></li>
+          <li class="nav-item"><a class="nav-link" href="./blog.html">Blog</a></li>
+          <li class="nav-item"><a class="nav-link nav-cta" href="#contact">Let's Talk</a></li>
         </ul>
       </div>
     </div>
@@ -49,176 +53,168 @@
   <!-- HERO -->
   <header id="home" class="hero">
     <div class="container hero-inner">
-      <div class="row align-items-center g-4">
-        <div class="col-lg-7" data-aos="fade-up">
-          <p class="hero-kicker">Hey there!</p>
+      <div class="row align-items-center g-5">
+        <div class="col-lg-7 reveal">
+          <div class="hero-kicker"><span class="pulse"></span> Open to opportunities</div>
 
           <h1 class="hero-title">
-            I'm <span class="accent">Yeasin Fiyaz</span>
+            Hi, I'm<br /><span class="accent">Yeasin Fiyaz</span>
           </h1>
 
-          <h2 class="hero-subtitle">
-            <span id="roleText">BSc. in Computer Science & Engineering | AI enthusiastic | Former Vice President - BUCLC</span>
-          </h2>
+          <h2 class="hero-subtitle"><span id="roleText"></span><span class="typed-cursor"></span></h2>
 
-          <p class="hero-tagline" id="taglineText">From Allah, for Allah, To Allah</p>
+          <p class="hero-tagline">From Allah, for Allah, To Allah</p>
 
-          <div class="d-flex gap-2 flex-wrap mt-3">
-            <a class="btn btn-accent" href="#about">
-              View My Portfolio <i class="fa-solid fa-arrow-right ms-2"></i>
+          <div class="d-flex gap-2 flex-wrap mt-4">
+            <a class="btn btn-accent btn-lg" href="#projects">
+              View My Work <i class="fa-solid fa-arrow-right ms-2"></i>
             </a>
-            <a class="btn btn-outline-light" href="#contact">Contact Me</a>
+            <a class="btn btn-outline-light btn-lg" data-cv href="#" target="_blank" rel="noreferrer">
+              <i class="fa-solid fa-download me-2"></i>Download CV
+            </a>
           </div>
 
           <div class="hero-meta mt-4">
-            <i class="fa-solid fa-location-dot me-2"></i>
-            <span>Dhaka, Bangladesh</span>
+            <span><i class="fa-solid fa-location-dot me-2" style="color:var(--accent2)"></i>Dhaka, Bangladesh</span>
+            <span><i class="fa-solid fa-graduation-cap me-2" style="color:var(--accent2)"></i>BRAC University</span>
+          </div>
+
+          <div class="hero-stats">
+            <div class="hero-stat"><b class="count" data-end="7">0</b><span>Projects</span></div>
+            <div class="hero-stat"><b class="count" data-end="10">0</b><span>Awards & Activities</span></div>
+            <div class="hero-stat"><b class="count" data-end="2">0</b><span>Leadership Roles</span></div>
+            <div class="hero-stat"><b class="count" data-end="40">0</b><span>Institutions Hosted</span></div>
           </div>
         </div>
 
-        <div class="col-lg-5" data-aos="fade-left">
-          <div class="profile-card">
-            <img src="./assets/img/profile.jpg" alt="Yeasin Fiyaz" class="profile-img" />
+        <div class="col-lg-5 reveal" data-delay="2">
+          <div class="profile-wrap">
+            <div class="profile-ring">
+              <img src="./assets/img/profile.jpg" alt="Yeasin Fiyaz" />
+            </div>
 
-            <div class="profile-card-body">
-              <p class="mb-1 fw-semibold">Focus areas:</p>
-              <div class="chip-row">
-                <span class="chip">Web Dev</span>
-                <span class="chip">AI/ML</span>
-                <span class="chip">Research</span>
-                <span class="chip">Frontend/Backend</span>
-                <span class="chip">Data Analysis</span>
-              </div>
-
-              <div class="mt-3 d-flex gap-3">
-                <a class="social" href="https://www.linkedin.com/in/yeasin-fiyaz-62bb12232/" target="_blank" aria-label="LinkedIn">
-                  <i class="fa-brands fa-linkedin"></i>
-                </a>
-                <a class="social" href="https://github.com/YeasinFiyaz" target="_blank" aria-label="GitHub">
-                  <i class="fa-brands fa-github"></i>
-                </a>
-                <a class="social" href="mailto:yeasinfiyaz@gmail.com" aria-label="Email">
-                  <i class="fa-solid fa-envelope"></i>
-                </a>
-              </div>
-
-              <div class="mt-3">
-                <a class="btn btn-sm btn-outline-light w-100" id="cvBtn" href="#" target="_blank" rel="noreferrer">
-                  Download CV
-                </a>
-                <p class="mini-text mt-2 mb-0">
-                  Download for more
-                </p>
-              </div>
-
+            <div class="float-card fc-1">
+              <i class="fa-solid fa-brain"></i>
+              <div><b>AI / ML</b><small>Deep learning & research</small></div>
+            </div>
+            <div class="float-card fc-2">
+              <i class="fa-solid fa-code"></i>
+              <div><b>Full-stack</b><small>Django • Spring Boot</small></div>
+            </div>
+            <div class="float-card fc-3">
+              <i class="fa-solid fa-people-group"></i>
+              <div><b>Ex-VP, BUCLC</b><small>Leadership & events</small></div>
             </div>
           </div>
         </div>
       </div>
-
-      <a class="scroll-down" href="#about">
-        Scroll Down <i class="fa-solid fa-arrow-down ms-2"></i>
-      </a>
     </div>
 
-    <div class="hero-glow"></div>
+    <a class="scroll-down" href="#about"><span class="mouse"></span>Scroll</a>
   </header>
+
+  <!-- MARQUEE -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span><i class="fa-brands fa-python"></i>Python</span>
+      <span><i class="fa-solid fa-leaf"></i>Django</span>
+      <span><i class="fa-brands fa-java"></i>Spring Boot</span>
+      <span><i class="fa-solid fa-plug"></i>REST APIs</span>
+      <span><i class="fa-solid fa-fire"></i>PyTorch</span>
+      <span><i class="fa-solid fa-network-wired"></i>TensorFlow</span>
+      <span><i class="fa-brands fa-js"></i>JavaScript</span>
+      <span><i class="fa-solid fa-c"></i>C / C++</span>
+      <span><i class="fa-brands fa-bootstrap"></i>Bootstrap</span>
+      <span><i class="fa-solid fa-database"></i>MySQL</span>
+      <span><i class="fa-brands fa-git-alt"></i>Git</span>
+      <span><i class="fa-brands fa-python"></i>Python</span>
+      <span><i class="fa-solid fa-leaf"></i>Django</span>
+      <span><i class="fa-brands fa-java"></i>Spring Boot</span>
+      <span><i class="fa-solid fa-plug"></i>REST APIs</span>
+      <span><i class="fa-solid fa-fire"></i>PyTorch</span>
+      <span><i class="fa-solid fa-network-wired"></i>TensorFlow</span>
+      <span><i class="fa-brands fa-js"></i>JavaScript</span>
+      <span><i class="fa-solid fa-c"></i>C / C++</span>
+      <span><i class="fa-brands fa-bootstrap"></i>Bootstrap</span>
+      <span><i class="fa-solid fa-database"></i>MySQL</span>
+      <span><i class="fa-brands fa-git-alt"></i>Git</span>
+    </div>
+  </div>
 
   <!-- ABOUT -->
   <section id="about" class="section">
     <div class="container">
-      <div class="section-head" data-aos="fade-up">
+      <div class="section-head reveal">
         <p class="section-kicker">Who am I?</p>
         <h2 class="section-title">About Me</h2>
-        <p class="section-subtitle">A CSE graduate with leadership and a passion for building impactful future through my weapon, known as the keyboard.</p>
+        <p class="section-subtitle">A CSE graduate with leadership and a passion for building an impactful future through my weapon, known as the keyboard.</p>
       </div>
 
-      <div class="row g-4 align-items-start">
-        <div class="col-lg-7" data-aos="fade-up">
-          <div class="cardx">
-            <p>
-              I'm a CSE undergraduate from BRAC University with a strong blend of leadership, analytical thinking, and technical expertise.
+      <div class="row g-4 align-items-stretch">
+        <div class="col-lg-7 reveal">
+          <div class="cardx cardx-glow">
+            <p class="fs-5" style="color:rgba(238,242,255,.9)">
+              I'm a CSE graduate from BRAC University with a strong blend of leadership, analytical thinking, and technical expertise.
               Passionate about software development, AI, and data-driven innovation that turns ideas into impactful solutions.
             </p>
 
             <div class="row g-3 mt-2">
               <div class="col-md-6">
+                <div class="icon-box"><i class="fa-solid fa-laptop-code"></i></div>
                 <h5 class="mini-title">Web Development</h5>
                 <p class="mini-text">Modern UI, responsive design, and full-stack foundations.</p>
               </div>
               <div class="col-md-6">
+                <div class="icon-box cyan"><i class="fa-solid fa-brain"></i></div>
                 <h5 class="mini-title">AI / Machine Learning</h5>
                 <p class="mini-text">ML/DL pipelines, experimentation, and explainable AI mindset.</p>
               </div>
               <div class="col-md-6">
+                <div class="icon-box pink"><i class="fa-solid fa-cubes"></i></div>
                 <h5 class="mini-title">Software Development</h5>
                 <p class="mini-text">Clean APIs, architecture, and building real-world systems.</p>
               </div>
               <div class="col-md-6">
+                <div class="icon-box green"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
                 <h5 class="mini-title">Research & Problem Solving</h5>
                 <p class="mini-text">Strong analytical approach with practical execution.</p>
               </div>
             </div>
 
-            <div class="mt-3">
-              <a class="btn btn-accent" href="./projects.html">See Projects</a>
+            <div class="mt-4">
+              <a class="btn btn-accent" href="./projects.html">See Projects <i class="fa-solid fa-arrow-right ms-2"></i></a>
             </div>
           </div>
         </div>
 
-        <div class="col-lg-5" data-aos="fade-left">
-          <div class="cardx">
+        <div class="col-lg-5 reveal" data-delay="1">
+          <div class="cardx cardx-glow">
             <h5 class="mini-title">Quick Snapshot</h5>
 
-            <div class="row text-center g-3 mt-2">
-              <div class="col-6">
-                <div class="stat">
-                  <span class="purecounter" data-purecounter-start="0" data-purecounter-end="7" data-purecounter-duration="1"></span>
-                  <div class="stat-label">Projects</div>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="stat">
-                  <span class="purecounter" data-purecounter-start="0" data-purecounter-end="10" data-purecounter-duration="1"></span>
-                  <div class="stat-label">Awards/Activities</div>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="stat">
-                  <span class="purecounter" data-purecounter-start="0" data-purecounter-end="5" data-purecounter-duration="1"></span>
-                  <div class="stat-label">Core Skills</div>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="stat">
-                  <span class="purecounter" data-purecounter-start="0" data-purecounter-end="4" data-purecounter-duration="1"></span>
-                  <div class="stat-label">Interests</div>
-                </div>
-              </div>
+            <div class="row text-center g-3 mt-1">
+              <div class="col-6"><div class="stat"><span class="count" data-end="7">0</span><div class="stat-label">Projects</div></div></div>
+              <div class="col-6"><div class="stat"><span class="count" data-end="10">0</span><div class="stat-label">Awards / Activities</div></div></div>
+              <div class="col-6"><div class="stat"><span class="count" data-end="5">0</span><div class="stat-label">Core Skills</div></div></div>
+              <div class="col-6"><div class="stat"><span class="count" data-end="4">0</span><div class="stat-label">Interests</div></div></div>
             </div>
 
             <hr class="sep" />
 
             <h5 class="mini-title">Interests</h5>
             <div class="chip-row">
-              <span class="chip">Gaming</span>
-              <span class="chip">Machine Learning</span>
-              <span class="chip">Aerospace Engineering</span>
-              <span class="chip">Cycling</span>
+              <span class="chip"><i class="fa-solid fa-gamepad me-2"></i>Gaming</span>
+              <span class="chip"><i class="fa-solid fa-robot me-2"></i>Machine Learning</span>
+              <span class="chip"><i class="fa-solid fa-rocket me-2"></i>Aerospace</span>
+              <span class="chip"><i class="fa-solid fa-bicycle me-2"></i>Cycling</span>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="row g-4 mt-1">
-        <div class="col-12" data-aos="fade-up">
-          <div class="cardx">
+            <hr class="sep" />
+
             <h5 class="mini-title">Education</h5>
-
             <div class="edu">
               <div class="edu-item">
-                <div class="edu-title">Bachelor of Science in Computer Science & Engineering</div>
-                <div class="mini-text">BRAC University • Major: CSE Undergraduate</div>
+                <div class="edu-title">BSc in Computer Science & Engineering</div>
+                <div class="mini-text">BRAC University • Completed</div>
               </div>
               <div class="edu-item">
                 <div class="edu-title">Higher Secondary Certificate</div>
@@ -229,261 +225,240 @@
                 <div class="mini-text">Engineering University School and College</div>
               </div>
             </div>
-
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- SKILLS -->
   <section id="skills" class="section section-alt">
     <div class="container">
-      <div class="section-head" data-aos="fade-up">
+      <div class="section-head reveal">
         <p class="section-kicker">Attainments</p>
         <h2 class="section-title">Skills</h2>
-        <p class="section-subtitle">Tools to turn ideas into reality</p>
+        <p class="section-subtitle">Tools to turn ideas into reality.</p>
       </div>
 
-      <div class="row g-4" data-aos="fade-up">
-        <div class="col-lg-6">
-          <div class="cardx">
-            <h5 class="mini-title">Skill Bars</h5>
+      <div class="row g-4">
+        <div class="col-lg-5 reveal">
+          <div class="cardx cardx-glow skills-card">
+            <h5 class="mini-title">Proficiency</h5>
 
-            <div class="skill">
-              <div class="skill-top"><span>Python</span><span>90%</span></div>
-              <div class="bar"><div class="fill" style="width: 90%"></div></div>
-            </div>
-
-            <div class="skill">
-              <div class="skill-top"><span>Django</span><span>80%</span></div>
-              <div class="bar"><div class="fill" style="width: 80%"></div></div>
-            </div>
-
-            <div class="skill">
-              <div class="skill-top"><span>Machine Learning</span><span>70%</span></div>
-              <div class="bar"><div class="fill" style="width: 70%"></div></div>
-            </div>
-
-            <div class="skill">
-              <div class="skill-top"><span>C / C++</span><span>60%</span></div>
-              <div class="bar"><div class="fill" style="width: 60%"></div></div>
-            </div>
-
-            <div class="skill">
-              <div class="skill-top"><span>Java / JavaScript</span><span>50%</span></div>
-              <div class="bar"><div class="fill" style="width: 50%"></div></div>
-            </div>
+            <div class="skill"><div class="skill-top"><span>Python</span><span>90%</span></div><div class="bar"><div class="fill" data-width="90"></div></div></div>
+            <div class="skill"><div class="skill-top"><span>Django</span><span>80%</span></div><div class="bar"><div class="fill" data-width="80"></div></div></div>
+            <div class="skill"><div class="skill-top"><span>Machine Learning</span><span>70%</span></div><div class="bar"><div class="fill" data-width="70"></div></div></div>
+            <div class="skill"><div class="skill-top"><span>C / C++</span><span>60%</span></div><div class="bar"><div class="fill" data-width="60"></div></div></div>
+            <div class="skill"><div class="skill-top"><span>Java / JavaScript</span><span>50%</span></div><div class="bar"><div class="fill" data-width="50"></div></div></div>
           </div>
         </div>
 
-        <div class="col-lg-6">
-          <div class="cardx">
+        <div class="col-lg-7 reveal" data-delay="1">
+          <div class="cardx cardx-glow">
             <h5 class="mini-title">Tools & Technologies</h5>
-            <div class="chip-row">
-              <span class="chip">Django</span>
-              <span class="chip">Spring Boot</span>
-              <span class="chip">REST APIs</span>
-              <span class="chip">PyTorch</span>
-              <span class="chip">TensorFlow</span>
-              <span class="chip">HTML</span>
-              <span class="chip">CSS</span>
-              <span class="chip">Bootstrap</span>
-              <span class="chip">Responsive UI</span>
+            <div class="tech-grid mt-3">
+              <div class="tech"><i class="fa-brands fa-python"></i>Python</div>
+              <div class="tech"><i class="fa-solid fa-leaf"></i>Django</div>
+              <div class="tech"><i class="fa-brands fa-java"></i>Spring Boot</div>
+              <div class="tech"><i class="fa-solid fa-plug"></i>REST APIs</div>
+              <div class="tech"><i class="fa-solid fa-fire"></i>PyTorch</div>
+              <div class="tech"><i class="fa-solid fa-network-wired"></i>TensorFlow</div>
+              <div class="tech"><i class="fa-brands fa-html5"></i>HTML</div>
+              <div class="tech"><i class="fa-brands fa-css3-alt"></i>CSS</div>
+              <div class="tech"><i class="fa-brands fa-bootstrap"></i>Bootstrap</div>
+              <div class="tech"><i class="fa-brands fa-js"></i>JavaScript</div>
+              <div class="tech"><i class="fa-solid fa-database"></i>MySQL</div>
+              <div class="tech"><i class="fa-brands fa-git-alt"></i>Git</div>
             </div>
 
             <hr class="sep" />
 
-            <h5 class="mini-title">What I’m aiming for</h5>
-            <p class="mini-text">
-              Strong foundation in software + growing depth in AI and research to build impactful systems.
-            </p>
+            <h5 class="mini-title">What I'm aiming for</h5>
+            <p class="mini-text">Strong foundation in software + growing depth in AI and research to build impactful systems.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
-  <!-- ================= EXPERIENCE ================= -->
-<section id="experience" class="section">
-  <div class="container">
-    <div class="section-head" data-aos="fade-up">
-      <p class="section-kicker">Leadership & Experience</p>
-      <h2 class="section-title">Work Experience</h2>
-      <p class="section-subtitle">
-        Leadership roles, event management, and teamwork across academic and cultural communities.
-      </p>
-    </div>
 
-    <!-- BUCLC -->
-    <div class="exp-card" data-aos="fade-up">
-      <div class="exp-bg" style="background-image:url('./assets/img/exp-buclc.jpg')"></div>
+  <!-- EXPERIENCE -->
+  <section id="experience" class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="section-kicker">Leadership & Experience</p>
+        <h2 class="section-title">Experience</h2>
+        <p class="section-subtitle">Leadership roles, event management, and teamwork across academic and cultural communities.</p>
+      </div>
 
-      <div class="exp-content">
-        <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
-          <div>
-            <h3 class="exp-role">Vice President — Brac University Communication and Language Club (BUCLC)</h3>
-            <div class="exp-meta">
-              <span><i class="fa-solid fa-calendar me-2"></i>Mar 2024 – Mar 2025</span>
-              <span class="mx-2">•</span>
-              <span><i class="fa-solid fa-location-dot me-2"></i>BRAC University, Dhaka, Bangladesh</span>
-            </div>
-          </div>
-        </div>
-
-        <ul class="exp-bullets mt-3">
-          <li>
-            Led executive teams to organize university-wide academic and cultural events, enhancing collaboration across departments.
-          </li>
-        </ul>
-
-        <div class="mt-3">
-          <div class="mini-title mb-2">Events Organized</div>
-
-          <div class="row g-3">
-            <div class="col-md-4">
-              <div class="event-tile">
-                <div class="event-bg" style="background-image:url('./assets/img/event-cultural-exchange.jpg')"></div>
-                <div class="event-overlay"></div>
-                <div class="event-text">
-                  <div class="event-name">Cultural Exchange</div>
-                  <div class="event-sub">BUCLC • 2022/2024</div>
+      <div class="timeline">
+        <!-- BUCLC -->
+        <div class="tl-item reveal">
+          <div class="exp-card">
+            <div class="exp-bg" style="background-image:url('./assets/img/exp-buclc.jpg')"></div>
+            <div class="exp-content">
+              <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
+                <div>
+                  <h3 class="exp-role">Vice President</h3>
+                  <div class="exp-org">BRAC University Communication and Language Club (BUCLC)</div>
                 </div>
+                <span class="exp-badge">Leadership</span>
               </div>
-            </div>
-
-            <div class="col-md-4">
-              <div class="event-tile">
-                <div class="event-bg" style="background-image:url('./assets/img/event-speakathon.jpg')"></div>
-                <div class="event-overlay"></div>
-                <div class="event-text">
-                  <div class="event-name">Speakathon</div>
-                  <div class="event-sub">State-level language championship</div>
-                </div>
+              <div class="exp-meta">
+                <span><i class="fa-solid fa-calendar me-2"></i>Mar 2024 – Mar 2025</span>
+                <span><i class="fa-solid fa-location-dot me-2"></i>BRAC University, Dhaka</span>
               </div>
-            </div>
 
-            <div class="col-md-4">
-              <div class="event-tile">
-                <div class="event-bg" style="background-image:url('./assets/img/event-speak-bold.jpg')"></div>
-                <div class="event-overlay"></div>
-                <div class="event-text">
-                  <div class="event-name">Speak Bold</div>
-                  <div class="event-sub">Confidence & public speaking</div>
+              <ul class="exp-bullets">
+                <li>Led executive teams to organize university-wide academic and cultural events, enhancing collaboration across departments.</li>
+              </ul>
+
+              <div class="mt-4">
+                <div class="mini-title mb-3">Events Organized</div>
+                <div class="row g-3">
+                  <div class="col-md-4">
+                    <div class="event-tile">
+                      <div class="event-bg" style="background-image:url('./assets/img/event-cultural-exchange.jpg')"></div>
+                      <div class="event-overlay"></div>
+                      <div class="event-text"><div class="event-name">Cultural Exchange</div><div class="event-sub">BUCLC • 2022 / 2024</div></div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="event-tile">
+                      <div class="event-bg" style="background-image:url('./assets/img/event-speakathon.jpg')"></div>
+                      <div class="event-overlay"></div>
+                      <div class="event-text"><div class="event-name">Speakathon</div><div class="event-sub">State-level language championship</div></div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="event-tile">
+                      <div class="event-bg" style="background-image:url('./assets/img/event-speak-bold.jpg')"></div>
+                      <div class="event-overlay"></div>
+                      <div class="event-text"><div class="event-name">Speak Bold</div><div class="event-sub">Confidence & public speaking</div></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-
-    <!-- EUSICAN -->
-    <div class="exp-card mt-4" data-aos="fade-up">
-      <div class="exp-bg" style="background-image:url('./assets/img/exp-eusican.jpg')"></div>
-
-      <div class="exp-content">
-        <h3 class="exp-role">President — EUSCIAN Science & Technology Club</h3>
-        <div class="exp-meta">
-          <span><i class="fa-solid fa-calendar me-2"></i>Jan 2019 – Dec 2020</span>
-          <span class="mx-2">•</span>
-          <span><i class="fa-solid fa-location-dot me-2"></i>Engineering University School & College, Dhaka, Bangladesh</span>
         </div>
 
-        <ul class="exp-bullets mt-3">
-          <li>
-            Organized PRAN presents 12th EUSCIAN Inter School & College Science Fair (co-powered by Igloo Bangladesh),
-            with participation from 40 institutions across Dhaka.
-          </li>
-        </ul>
+        <!-- EUSCIAN -->
+        <div class="tl-item reveal">
+          <div class="exp-card">
+            <div class="exp-bg" style="background-image:url('./assets/img/exp-eusican.jpg')"></div>
+            <div class="exp-content">
+              <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
+                <div>
+                  <h3 class="exp-role">President</h3>
+                  <div class="exp-org">EUSCIAN Science & Technology Club</div>
+                </div>
+                <span class="exp-badge">Leadership</span>
+              </div>
+              <div class="exp-meta">
+                <span><i class="fa-solid fa-calendar me-2"></i>Jan 2019 – Dec 2020</span>
+                <span><i class="fa-solid fa-location-dot me-2"></i>Engineering University School & College, Dhaka</span>
+              </div>
+              <ul class="exp-bullets">
+                <li>Organized PRAN presents 12th EUSCIAN Inter School & College Science Fair (co-powered by Igloo Bangladesh), with participation from 40 institutions across Dhaka.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  </section>
 
-  </div>
-</section>
   <!-- PROJECTS -->
-  <section id="projects" class="section">
+  <section id="projects" class="section section-alt">
     <div class="container">
-      <div class="d-flex align-items-end justify-content-between flex-wrap gap-2 section-head" data-aos="fade-up">
+      <div class="d-flex align-items-end justify-content-between flex-wrap gap-3 section-head reveal">
         <div>
           <p class="section-kicker">My Featured Projects</p>
           <h2 class="section-title">Projects</h2>
-          <p class="section-subtitle">Selected works</p>
+          <p class="section-subtitle">Selected works, from AI research to systems programming.</p>
         </div>
-        <a class="btn btn-accent" href="./projects.html">View All Projects</a>
+        <a class="btn btn-outline-light" href="./projects.html">View All Projects <i class="fa-solid fa-arrow-right ms-2"></i></a>
       </div>
 
-      <div id="featuredProjects" class="row g-4" data-aos="fade-up"></div>
+      <div id="featuredProjects" class="row g-4"></div>
     </div>
   </section>
 
   <!-- CONTACT -->
-  <section id="contact" class="section section-alt">
+  <section id="contact" class="section">
     <div class="container">
-      <div class="section-head" data-aos="fade-up">
-        <p class="section-kicker">Get in Touch with me</p>
+      <div class="section-head reveal">
+        <p class="section-kicker">Get in Touch</p>
         <h2 class="section-title">Ready to connect?</h2>
-        <p class="section-subtitle">Send a message directly to my email.</p>
+        <p class="section-subtitle">Have a project, an idea, or an opportunity? Send a message straight to my inbox.</p>
       </div>
 
-      <div class="row g-4" data-aos="fade-up">
-        <div class="col-lg-6">
-          <div class="cardx">
+      <div class="row g-4">
+        <div class="col-lg-7 reveal">
+          <div class="cardx cardx-glow">
             <h5 class="mini-title">Message Me</h5>
-
-            <form id="contactForm">
-              <div class="mb-3">
-                <label class="form-label">Your Name</label>
-                <input class="form-control form-dark" id="cName" required />
+            <form id="contactForm" class="mt-3">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label" for="cName">Your Name</label>
+                  <input class="form-control form-dark" id="cName" placeholder="John Doe" required />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="cEmail">Email</label>
+                  <input class="form-control form-dark" id="cEmail" type="email" placeholder="you@example.com" required />
+                </div>
+                <div class="col-12">
+                  <label class="form-label" for="cMsg">Message</label>
+                  <textarea class="form-control form-dark" id="cMsg" rows="5" placeholder="Tell me about it..." required></textarea>
+                </div>
+                <div class="col-12">
+                  <button class="btn btn-accent btn-lg w-100" type="submit"><i class="fa-solid fa-paper-plane me-2"></i>Send Message</button>
+                </div>
               </div>
-              <div class="mb-3">
-                <label class="form-label">Email</label>
-                <input class="form-control form-dark" id="cEmail" type="email" required />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Message</label>
-                <textarea class="form-control form-dark" id="cMsg" rows="4" required></textarea>
-              </div>
-              <button class="btn btn-accent w-100" type="submit">Send</button>
-              <p class="mini-text mt-2 mb-0">
-              </p>
             </form>
           </div>
         </div>
 
-        <div class="col-lg-6">
-          <div class="cardx">
-            <h5 class="mini-title">Contacts</h5>
-            <ul class="contact-list">
-              <li><i class="fa-solid fa-phone"></i> +8801903571637</li>
-              <li><i class="fa-solid fa-envelope"></i> yeasinfiyaz@gmail.com</li>
-              <li><i class="fa-solid fa-location-dot"></i> Dhaka, Bangladesh</li>
+        <div class="col-lg-5 reveal" data-delay="1">
+          <div class="cardx cardx-glow">
+            <h5 class="mini-title">Contact Info</h5>
+            <ul class="contact-list mt-3">
+              <li><span class="contact-icon"><i class="fa-solid fa-phone"></i></span><a href="tel:+8801903571637">+880 1903-571637</a></li>
+              <li><span class="contact-icon"><i class="fa-solid fa-envelope"></i></span><a href="mailto:yeasinfiyaz@gmail.com">yeasinfiyaz@gmail.com</a></li>
+              <li><span class="contact-icon"><i class="fa-solid fa-location-dot"></i></span><span>Dhaka, Bangladesh</span></li>
             </ul>
 
             <hr class="sep" />
 
-            <h5 class="mini-title">Links</h5>
-            <div class="d-flex gap-3 flex-wrap">
-              <a class="btn btn-outline-light btn-sm" target="_blank" href="https://www.linkedin.com/in/yeasin-fiyaz-62bb12232/">
-                <i class="fa-brands fa-linkedin me-2"></i>LinkedIn
-              </a>
-              <a class="btn btn-outline-light btn-sm" target="_blank" href="https://github.com/YeasinFiyaz">
-                <i class="fa-brands fa-github me-2"></i>GitHub
-              </a>
+            <h5 class="mini-title">Find me online</h5>
+            <div class="d-flex gap-3 flex-wrap mt-3">
+              <a class="social" target="_blank" rel="noreferrer" href="https://www.linkedin.com/in/yeasin-fiyaz-62bb12232/" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a class="social" target="_blank" rel="noreferrer" href="https://github.com/YeasinFiyaz" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+              <a class="social" href="mailto:yeasinfiyaz@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
             </div>
 
+            <hr class="sep" />
+            <a class="btn btn-outline-light w-100" data-cv href="#" target="_blank" rel="noreferrer"><i class="fa-solid fa-file-arrow-down me-2"></i>Download CV</a>
           </div>
         </div>
       </div>
-
-      <footer class="footer mt-5">
-        <div class="container">
-          <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
-            <div class="mini-text">© Yeasin Fiyaz • All rights reserved.</div>
-            <div class="mini-text">Built with HTML • CSS • JS</div>
-          </div>
-        </div>
-      </footer>
-
     </div>
   </section>
 
-  <!-- Scripts -->
+  <footer class="footer">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between gap-2">
+      <div>© <span data-year></span> Yeasin Fiyaz • All rights reserved.</div>
+      <div class="d-flex gap-3">
+        <a href="https://www.linkedin.com/in/yeasin-fiyaz-62bb12232/" target="_blank" rel="noreferrer"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="https://github.com/YeasinFiyaz" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i></a>
+        <a href="mailto:yeasinfiyaz@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <button class="to-top" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
   <script src="./js/main.js"></script>
 </body>
 </html>

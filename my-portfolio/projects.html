@@ -4,64 +4,72 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Projects | Yeasin Fiyaz</title>
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <meta name="description" content="All projects by Yeasin Fiyaz: AI, deep learning, compilers, systems and web apps." />
+  <meta name="theme-color" content="#05070F" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cdefs%3E%3ClinearGradient id=%27g%27 x1=%270%27 x2=%271%27%3E%3Cstop stop-color=%27%238B5CF6%27/%3E%3Cstop offset=%271%27 stop-color=%27%2322D3EE%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%2764%27 height=%2764%27 rx=%2714%27 fill=%27url(%23g)%27/%3E%3Ctext x=%2732%27 y=%2742%27 font-size=%2728%27 font-family=%27Arial%27 font-weight=%27bold%27 fill=%27%230B1020%27 text-anchor=%27middle%27%3EYF%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="./css/style.css" />
 </head>
 
 <body>
+  <div class="bg-aurora"><span></span><span></span><span></span></div>
+  <div class="bg-grid"></div>
+  <div class="cursor-glow"></div>
+  <div class="scroll-progress"></div>
+
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top nav-blur">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="./index.html">Yeasin Fiyaz</a>
-
-      <div class="ms-auto d-flex gap-2">
-        <a class="btn btn-sm btn-outline-light" href="./index.html#projects">Back</a>
-        <a class="btn btn-sm btn-accent" href="./awards.html">Awards</a>
+      <a class="navbar-brand" href="./index.html"><span class="brand-dot">YF</span>Yeasin Fiyaz</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="./index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="./index.html#about">About</a></li>
+          <li class="nav-item"><a class="nav-link active" href="./projects.html">Projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="./awards.html">Awards</a></li>
+          <li class="nav-item"><a class="nav-link" href="./publications.html">Publications</a></li>
+          <li class="nav-item"><a class="nav-link" href="./blog.html">Blog</a></li>
+          <li class="nav-item"><a class="nav-link nav-cta" href="./index.html#contact">Let's Talk</a></li>
+        </ul>
       </div>
     </div>
   </nav>
 
-  <section class="section" style="padding-top:110px">
+  <header class="page-hero">
     <div class="container">
-      <div class="section-head">
-        <p class="section-kicker">Portfolio</p>
-        <h2 class="section-title">All Projects</h2>
-        <p class="section-subtitle">Edit projects from <b>data/projects.json</b></p>
-      </div>
+      <div class="breadcrumb-lite reveal"><a href="./index.html"><i class="fa-solid fa-house"></i></a><span>/</span><span>Projects</span></div>
+      <p class="section-kicker reveal">Portfolio</p>
+      <h1 class="section-title reveal">All Projects</h1>
+      <p class="section-subtitle reveal" data-delay="1">Things I have built, from AI research to systems programming.</p>
+    </div>
+  </header>
 
+  <section class="section pt-2">
+    <div class="container">
       <div id="allProjects" class="row g-4"></div>
     </div>
   </section>
 
-  <script>
-    async function loadAll() {
-      const res = await fetch("./data/projects.json");
-      const projects = await res.json();
-      const wrap = document.getElementById("allProjects");
+  <footer class="footer">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between gap-2">
+      <div>&copy; <span data-year></span> Yeasin Fiyaz &bull; All rights reserved.</div>
+      <div class="d-flex gap-3">
+        <a href="https://www.linkedin.com/in/yeasin-fiyaz-62bb12232/" target="_blank" rel="noreferrer"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="https://github.com/YeasinFiyaz" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i></a>
+        <a href="mailto:yeasinfiyaz@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+      </div>
+    </div>
+  </footer>
 
-      wrap.innerHTML = projects.map(p => `
-        <div class="col-md-6 col-lg-4">
-          <div class="project-card">
-            <img class="project-img" src="${p.image}" alt="${p.title}">
-            <div class="project-body">
-              <h5 class="project-title">${p.title}</h5>
-              <div class="mini-text">${p.period}</div>
-              <p class="mini-text mt-2">${p.short}</p>
+  <button class="to-top" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
 
-              <div class="project-tags mt-2">
-                ${p.tags.map(t => `<span class="tag">${t}</span>`).join("")}
-              </div>
-
-              <div class="mt-3 d-flex gap-2 flex-wrap">
-                ${p.github ? `<a class="btn btn-sm btn-outline-light" href="${p.github}" target="_blank">GitHub</a>` : ""}
-                ${p.demo ? `<a class="btn btn-sm btn-accent" href="${p.demo}" target="_blank">Live</a>` : ""}
-              </div>
-            </div>
-          </div>
-        </div>
-      `).join("");
-    }
-    loadAll();
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./js/main.js"></script>
 </body>
 </html>

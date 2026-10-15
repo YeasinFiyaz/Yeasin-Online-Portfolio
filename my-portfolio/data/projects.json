@@ -14,7 +14,7 @@
     "period": "2026",
     "short": "Deep learning system for brain tumor MRI segmentation and classification using U-Net and Attention U-Net.",
     "tags": ["Deep Learning", "U-Net", "MRI", "Segmentation"],
-    "github": "",
+    "github": "https://github.com/YeasinFiyaz/Joint-Segmentation-and-Classification-of-Brain-Tumors",
     "demo": "",
     "image": "./assets/img/joint_segmentation and classification.jpg",
     "featured": true
@@ -24,7 +24,7 @@
     "period": "2025",
     "short": "C programs to create raw disk images and inject files into a MiniVSFS filesystem.",
     "tags": ["C", "Filesystem", "Systems"],
-    "github": "",
+    "github": "https://github.com/YeasinFiyaz/MiniVSFS-A-C-based-VSFS-Image-Generator",
     "demo": "",
     "image": "./assets/img/Minivsfs.jpg",
     "featured": true
@@ -34,7 +34,7 @@
     "period": "10/2025 - 01/2026",
     "short": "A custom compiler in C, covering lexical analysis, parsing, and code generation.",
     "tags": ["Compiler", "C", "Parsing", "Codegen"],
-    "github": "",
+    "github": "https://github.com/YeasinFiyaz/MathaNoshto-Compiler-420",
     "demo": "",
     "image": "./assets/img/compiler.jpg",
     "featured": true
@@ -54,7 +54,7 @@
     "period": "05/2025",
     "short": "Interactive 2D OpenGL game using GL_POINTS and midpoint algorithms with real-time collision and scoring.",
     "tags": ["OpenGL", "Game", "C/C++"],
-    "github": "",
+    "github": "https://github.com/YeasinFiyaz/CSE423-Lab-Assignments",
     "demo": "",
     "image": "./assets/img/catch_the_diamonds.jpg",
     "featured": true
@@ -64,7 +64,7 @@
     "period": "2025",
     "short": "Low-cost blind stick sensors to detect obstacles and assist safe navigation.",
     "tags": ["IoT", "Sensors", "Accessibility"],
-    "github": "",
+    "github": "https://github.com/YeasinFiyaz/Sound-based-Blind-Stick",
     "demo": "",
     "image": "./assets/img/blind_stick.jpg",
     "featured": false
