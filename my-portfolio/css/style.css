@@ -272,10 +272,26 @@ a{color:inherit}
 .edu-title{font-weight:700}
 
 /* ---------- Skills ---------- */
-.skill{margin-top:18px}
-.skill-top{display:flex; justify-content:space-between; color:rgba(238,242,255,.92); font-weight:500; font-size:.95rem}
-.bar{height:8px; background:rgba(255,255,255,.07); border-radius:999px; overflow:hidden; margin-top:8px}
-.fill{height:100%; width:0; background:var(--grad); background-size:200% 100%; border-radius:999px; transition:width 1.2s cubic-bezier(.2,.7,.2,1); animation:shine 4s linear infinite}
+.skill{display:flex; align-items:center; gap:14px; margin-top:18px}
+.skill-icon{
+  width:40px; height:40px; flex-shrink:0; border-radius:11px; display:grid; place-items:center; font-size:1.05rem;
+  background:rgba(139,92,246,.12); border:1px solid rgba(139,92,246,.28); color:#C4B5FD;
+}
+.skill-main{flex:1; min-width:0}
+.skill-top{display:flex; justify-content:space-between; align-items:baseline; color:rgba(238,242,255,.92); font-weight:600; font-size:.95rem}
+.skill-level{color:var(--muted); font-size:.78rem; font-weight:500}
+.skill-level b{color:#fff; font-weight:600; margin-left:6px; font-size:.85rem}
+.bar{position:relative; height:6px; background:rgba(255,255,255,.06); border-radius:999px; margin-top:9px}
+.fill{
+  position:relative; height:100%; width:0; border-radius:999px;
+  background:linear-gradient(90deg, var(--accent), var(--accent2));
+  box-shadow:0 0 12px rgba(34,211,238,.35);
+  transition:width 1.4s cubic-bezier(.2,.7,.2,1);
+}
+.fill::after{
+  content:""; position:absolute; right:-5px; top:50%; width:12px; height:12px; margin-top:-6px; border-radius:50%;
+  background:#fff; border:3px solid var(--accent2); box-shadow:0 0 10px rgba(34,211,238,.8);
+}
 .tech-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:12px}
 .tech{
   display:flex; flex-direction:column; align-items:center; gap:8px; padding:16px 8px; border-radius:14px;
