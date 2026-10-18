@@ -1,0 +1,111 @@
+[
+  {
+    "id": "esb-ai",
+    "role": "Data Analyst & AI Engineer",
+    "org": "ESB Power Line",
+    "logo": "",
+    "start": "Sep 2026",
+    "end": "Present",
+    "location": "Dhaka, Bangladesh · On-site",
+    "tag": "Full-time",
+    "summary": "Building AI and data products for Bangladesh's power & energy sector.\n\n- Designed and developed, with my team, **ESB PowerLine** (esbpowerline.com): a bilingual news and data portal covering power generation, grid, fuel & LNG, renewables, policy, tariffs and markets.\n- Build data pipelines and analysis tools that collect and organise sector news and data from many official sources.\n- Working on the upcoming ESB PowerLine monthly magazine on the power sector.",
+    "events": [
+      {
+        "id": "esb-portal",
+        "title": "ESB PowerLine portal",
+        "date": "2026",
+        "tagline": "Power & energy news and grid data, under one roof",
+        "cover": "./assets/img/proj-esbpowerline.jpg",
+        "link": "https://esbpowerline.com/",
+        "body": "ESB PowerLine brings Bangladesh's power and energy sector together on one platform, with daily, sector-focused updates in English and Bangla.\n\n**Coverage includes:** power generation, grid & transmission, distribution & utilities, oil, gas & LNG, renewable & alternative energy, energy policy & regulation, consumers & tariffs, energy markets, finance & investment, infrastructure & major projects, international & cross-border energy, environment & energy efficiency, and industry & technology.\n\nThe portal also has a live grid-data snapshot and a magazine section, with a dedicated monthly magazine coming soon.\n\n*One sector. One platform. One roof.*",
+        "photos": []
+      }
+    ]
+  },
+  {
+    "id": "buclc-vp",
+    "role": "Vice President",
+    "org": "BRAC University Communication and Language Club (BUCLC)",
+    "logo": "./assets/img/exp-buclc.jpg",
+    "start": "Jan 2022",
+    "end": "Mar 2025",
+    "location": "BRAC University, Dhaka",
+    "tag": "Leadership",
+    "summary": "Led executive teams to organize university-wide academic and cultural events, enhancing collaboration across departments.\n\n- **Vice President** · Mar 2024 – Mar 2025\n- **Director** · Jan 2022 – Mar 2024",
+    "events": [
+      {
+        "id": "cultural-exchange",
+        "title": "Cultural Exchange",
+        "date": "2022 / 2024",
+        "tagline": "Multicultural fair at BRAC University",
+        "cover": "./assets/img/event-cultural-exchange.jpg",
+        "body": "",
+        "photos": []
+      },
+      {
+        "id": "speakathon",
+        "title": "Speakathon",
+        "date": "2025",
+        "tagline": "State-level language championship",
+        "cover": "./assets/img/event-speakathon.jpg",
+        "body": "",
+        "photos": []
+      },
+      {
+        "id": "speak-bold",
+        "title": "Speak Bold",
+        "date": "",
+        "tagline": "Confidence & public speaking",
+        "cover": "./assets/img/event-speak-bold.jpg",
+        "body": "",
+        "photos": []
+      }
+    ]
+  },
+  {
+    "id": "bucc",
+    "role": "Senior Executive",
+    "org": "BRAC University Computer Club (BUCC)",
+    "logo": "",
+    "start": "Dec 2021",
+    "end": "Mar 2024",
+    "location": "BRAC University, Dhaka",
+    "tag": "Club",
+    "summary": "Senior Executive of the BRAC University Computer Club for over two years.",
+    "events": []
+  },
+  {
+    "id": "srijon",
+    "role": "Blog Writing & Video Editing Intern",
+    "org": "Project Srijon, BRAC University",
+    "logo": "",
+    "start": "May 2022",
+    "end": "Aug 2022",
+    "location": "BRAC University, Dhaka",
+    "tag": "Internship",
+    "summary": "Wrote blog content and edited videos for Project Srijon during a four-month internship.",
+    "events": []
+  },
+  {
+    "id": "euscian-president",
+    "role": "President",
+    "org": "EUSCIAN Science & Technology Club",
+    "logo": "",
+    "start": "Jan 2019",
+    "end": "Dec 2020",
+    "location": "Engineering University School & College, Dhaka",
+    "tag": "Leadership",
+    "summary": "Organized PRAN presents 12th EUSCIAN Inter School & College Science Fair (co-powered by Igloo Bangladesh), with participation from 40 institutions across Dhaka.",
+    "events": [
+      {
+        "id": "euscian-fair-2019",
+        "title": "12th EUSCIAN Science & Technology Fair",
+        "date": "23–25 Sep 2019",
+        "tagline": "Inter school & college fair · 40 institutions",
+        "cover": "./assets/img/exp-eusican.jpg",
+        "body": "",
+        "photos": []
+      }
+    ]
+  }
+]

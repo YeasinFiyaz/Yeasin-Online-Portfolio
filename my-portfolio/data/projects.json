@@ -1,9 +1,105 @@
 [
   {
+    "title": "ESB PowerLine — Bangladesh Power & Energy Portal",
+    "period": "2026 – Present",
+    "short": "Designed and built, with my team at ESB Power Line, a bilingual (English/Bangla) news and data portal for Bangladesh's power & energy sector: daily coverage across 12 sector areas, a live grid-data dashboard and an upcoming monthly magazine.",
+    "tags": [
+      "Web Platform",
+      "Data",
+      "Energy Sector",
+      "EN / BN"
+    ],
+    "github": "",
+    "demo": "https://esbpowerline.com/",
+    "image": "./assets/img/proj-esbpowerline.jpg",
+    "featured": true
+  },
+  {
+    "title": "Multimodal Deep Learning for Predicting Mechanical Ventilation Duration",
+    "period": "Jan 2025 – Feb 2026",
+    "short": "Undergraduate thesis supervised by Dr. Swakkhar Shatabda: a multimodal model that combines chest X-rays with clinical data to predict how long a patient will need mechanical ventilation.",
+    "tags": [
+      "Deep Learning",
+      "Medical Imaging",
+      "Multimodal",
+      "Thesis"
+    ],
+    "github": "https://github.com/YeasinFiyaz/Undergraduate-Thesis",
+    "demo": "",
+    "image": "./assets/img/proj-thesis.jpg",
+    "featured": true
+  },
+  {
+    "title": "LoanRisk AI — Loan Default Prediction Platform",
+    "period": "2026",
+    "short": "Full-stack ML web app that scores loan applicants in real time. Model trained on 1.3 million real loan records, served by a Django REST API with a React dashboard showing a risk meter and risk-distribution analytics.",
+    "tags": [
+      "Machine Learning",
+      "XGBoost",
+      "Django REST",
+      "React"
+    ],
+    "github": "https://github.com/YeasinFiyaz/loan-risk-app",
+    "demo": "https://loanrisk.vercel.app/",
+    "image": "./assets/img/proj-loanrisk.jpg",
+    "featured": true
+  },
+  {
+    "title": "QRoll — Smart QR Attendance System",
+    "period": "2026",
+    "short": "Full-stack web app that digitalises classroom attendance: teachers show a time-limited QR code, students scan it with their phone, and reports and low-attendance email alerts are generated automatically.",
+    "tags": [
+      "React",
+      "Node.js",
+      "MySQL",
+      "JWT",
+      "Socket.IO"
+    ],
+    "github": "https://github.com/YeasinFiyaz/qroll-frontend",
+    "demo": "https://helloqroll.vercel.app/",
+    "image": "./assets/img/proj-qroll.jpg",
+    "featured": true
+  },
+  {
+    "title": "Time-aware Political Sentiment & Narrative Dynamics in Bangla Online Discourse",
+    "period": "Jan 2026 – Feb 2026",
+    "short": "Research on how political sentiment in Bangladeshi online discourse shifts over time: robust sentiment classification, measurable short- and long-term shifts, with a focus on reproducibility, interpretability and ethics.",
+    "tags": [
+      "NLP",
+      "Bangla",
+      "Machine Learning",
+      "Research"
+    ],
+    "github": "https://github.com/YeasinFiyaz/Time-Aware-Political-Sentiment-and-Narrative-Dynamics-in-Bangla-Online",
+    "demo": "",
+    "image": "./assets/img/proj-sentiment.jpg",
+    "featured": true
+  },
+  {
+    "title": "Real-Time Notification System",
+    "period": "2026",
+    "short": "Backend for secure live broadcasting: JWT authentication with role-based access, admin-only broadcasts, WebSocket live dashboard, Redis Pub/Sub message queue and PostgreSQL storage.",
+    "tags": [
+      "FastAPI",
+      "Redis",
+      "WebSocket",
+      "PostgreSQL"
+    ],
+    "github": "https://github.com/YeasinFiyaz/Real-Time-Notification",
+    "demo": "",
+    "image": "./assets/img/proj-notify.jpg",
+    "featured": false
+  },
+  {
     "title": "AI-Driven Data Analysis of Post-COVID Implications on Cancer Patients",
     "period": "01/2023 - Present",
     "short": "ML/DL pipelines for cancer classification using medical imaging and clinical data with explainable AI.",
-    "tags": ["AI", "ML/DL", "Explainable AI", "Medical"],
+    "tags": [
+      "AI",
+      "ML/DL",
+      "Explainable AI",
+      "Medical"
+    ],
     "github": "",
     "demo": "",
     "image": "./assets/img/proj-2.jpg",
@@ -13,7 +109,12 @@
     "title": "Joint Segmentation and Classification of Brain Tumors",
     "period": "2026",
     "short": "Deep learning system for brain tumor MRI segmentation and classification using U-Net and Attention U-Net.",
-    "tags": ["Deep Learning", "U-Net", "MRI", "Segmentation"],
+    "tags": [
+      "Deep Learning",
+      "U-Net",
+      "MRI",
+      "Segmentation"
+    ],
     "github": "https://github.com/YeasinFiyaz/Joint-Segmentation-and-Classification-of-Brain-Tumors",
     "demo": "",
     "image": "./assets/img/joint_segmentation and classification.jpg",
@@ -23,47 +124,69 @@
     "title": "MiniVSFS - A C based VSFS Image Generator",
     "period": "2025",
     "short": "C programs to create raw disk images and inject files into a MiniVSFS filesystem.",
-    "tags": ["C", "Filesystem", "Systems"],
+    "tags": [
+      "C",
+      "Filesystem",
+      "Systems"
+    ],
     "github": "https://github.com/YeasinFiyaz/MiniVSFS-A-C-based-VSFS-Image-Generator",
     "demo": "",
     "image": "./assets/img/Minivsfs.jpg",
-    "featured": true
+    "featured": false
   },
   {
     "title": "MathaNoshto Compiler",
     "period": "10/2025 - 01/2026",
     "short": "A custom compiler in C, covering lexical analysis, parsing, and code generation.",
-    "tags": ["Compiler", "C", "Parsing", "Codegen"],
+    "tags": [
+      "Compiler",
+      "C",
+      "Parsing",
+      "Codegen"
+    ],
     "github": "https://github.com/YeasinFiyaz/MathaNoshto-Compiler-420",
     "demo": "",
     "image": "./assets/img/compiler.jpg",
-    "featured": true
+    "featured": false
   },
   {
     "title": "Travel Booking Website — Bus Lagbe?",
     "period": "12/2024 - 01/2025",
     "short": "A responsive travel booking platform with secure payments using Django, Bootstrap, and DB (MySQL/MongoDB).",
-    "tags": ["Django", "Bootstrap", "Payments", "Web"],
+    "tags": [
+      "Django",
+      "Bootstrap",
+      "Payments",
+      "Web"
+    ],
     "github": "",
     "demo": "",
     "image": "./assets/img/proj-1.jpg",
-    "featured": true
+    "featured": false
   },
   {
     "title": "Catch the Diamonds! — 2D OpenGL Game",
     "period": "05/2025",
     "short": "Interactive 2D OpenGL game using GL_POINTS and midpoint algorithms with real-time collision and scoring.",
-    "tags": ["OpenGL", "Game", "C/C++"],
+    "tags": [
+      "OpenGL",
+      "Game",
+      "C/C++"
+    ],
     "github": "https://github.com/YeasinFiyaz/CSE423-Lab-Assignments",
     "demo": "",
     "image": "./assets/img/catch_the_diamonds.jpg",
-    "featured": true
+    "featured": false
   },
   {
     "title": "Compatible Blind Stick",
     "period": "2025",
     "short": "Low-cost blind stick sensors to detect obstacles and assist safe navigation.",
-    "tags": ["IoT", "Sensors", "Accessibility"],
+    "tags": [
+      "IoT",
+      "Sensors",
+      "Accessibility"
+    ],
     "github": "https://github.com/YeasinFiyaz/Sound-based-Blind-Stick",
     "demo": "",
     "image": "./assets/img/blind_stick.jpg",

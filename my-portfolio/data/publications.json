@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "id": "thesis-2026",
+    "title": "Multimodal Deep Learning for Predicting Mechanical Ventilation Duration from Chest X-ray and Clinical Data",
+    "authors": "Yeasin Fiyaz et al. — supervised by Dr. Swakkhar Shatabda",
+    "venue": "Undergraduate Thesis, Department of CSE, BRAC University",
+    "year": 2026,
+    "type": "Thesis",
+    "link": "https://github.com/YeasinFiyaz/Undergraduate-Thesis",
+    "pdf": "",
+    "abstract": "A multimodal deep-learning approach that combines chest X-ray images with clinical data to predict the duration of mechanical ventilation a patient will need, supporting AI-driven decision making in healthcare."
+  }
+]

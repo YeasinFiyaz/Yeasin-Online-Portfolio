@@ -60,26 +60,7 @@
 
   <section class="section pt-2">
     <div class="container">
-      <div class="row g-4">
-        <div class="col-lg-6 reveal">
-          <div class="cardx empty-state">
-            <i class="fa-solid fa-pen-nib"></i>
-            <h5 class="mini-title">Coming Soon</h5>
-            <p class="mini-text">Blog posts are on the way. Stay tuned!</p>
-          </div>
-        </div>
-        <div class="col-lg-6 reveal" data-delay="1">
-          <div class="cardx">
-            <h5 class="mini-title">Upcoming topics</h5>
-            <ul class="mini-text mt-3 mb-0 d-grid gap-2" style="list-style:none;padding:0">
-              <li><i class="fa-solid fa-circle-chevron-right me-2" style="color:var(--orange)"></i>My journey into AI &amp; research</li>
-              <li><i class="fa-solid fa-circle-chevron-right me-2" style="color:var(--orange)"></i>Compiler project lessons</li>
-              <li><i class="fa-solid fa-circle-chevron-right me-2" style="color:var(--orange)"></i>Medical imaging DL (U-Net)</li>
-              <li><i class="fa-solid fa-circle-chevron-right me-2" style="color:var(--orange)"></i>Django payments workflow</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <div id="blogList" class="row g-4"></div>
     </div>
   </section>
 
@@ -97,6 +78,8 @@
   <button class="to-top" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
   <script src="./js/main.js"></script>
 </body>
 </html>
