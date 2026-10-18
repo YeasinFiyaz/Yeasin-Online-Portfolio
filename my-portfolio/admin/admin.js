@@ -102,7 +102,7 @@ async function api(path, opts = {}) {
   const res = await fetch(path, { ...opts, headers: { ...(opts.headers || {}), ...(token ? { authorization: `Bearer ${token}` } : {}) } });
   let body = null;
   try { body = await res.json(); } catch {}
-  if (res.status === 401 && path !== "/api/login") { signOut("Your session ended. Please sign in again."); throw new Error("signed out"); }
+  if (res.status === 401 && !["/api/login", "/api/setup", "/api/password"].includes(path)) { signOut("Your session ended. Please sign in again."); throw new Error("signed out"); }
   if (!res.ok) throw new Error((body && body.error) || `Error ${res.status}`);
   return body;
 }
@@ -132,11 +132,15 @@ function toast(msg, err) {
 }
 
 /* ---------- auth ---------- */
-function signOut(msg) {
+async function signOut(msg) {
   token = ""; localStorage.removeItem("pf_token");
   $("#appView").hidden = true; $("#loginView").hidden = false;
   closeDrawer(true);
-  $("#loginErr").textContent = msg || "";
+  let needsSetup = false;
+  try { needsSetup = (await (await fetch("/api/setup", { cache: "no-store" })).json()).needsSetup; } catch {}
+  $("#loginForm").hidden = needsSetup; $("#setupForm").hidden = !needsSetup;
+  $("#loginErr").textContent = needsSetup ? "" : (msg || "");
+  (needsSetup ? $("#setupCode") : $("#pw")).focus();
 }
 $("#loginForm").addEventListener("submit", async e => {
   e.preventDefault();
@@ -151,9 +155,45 @@ $("#loginForm").addEventListener("submit", async e => {
     $("#loginErr").textContent = err.message;
   } finally { btn.disabled = false; }
 });
-$(".pw-eye").addEventListener("click", () => {
-  const i = $("#pw"); i.type = i.type === "password" ? "text" : "password";
-  $(".pw-eye i").className = i.type === "password" ? "fa-solid fa-eye" : "fa-solid fa-eye-slash";
+document.querySelectorAll(".pw-eye").forEach(b => b.addEventListener("click", () => {
+  const i = document.getElementById(b.dataset.for || "pw"); i.type = i.type === "password" ? "text" : "password";
+  b.querySelector("i").className = i.type === "password" ? "fa-solid fa-eye" : "fa-solid fa-eye-slash";
+}));
+
+// first-time setup: one-time code + new password
+$("#setupForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const err = $("#setupErr"), btn = e.target.querySelector("button[type=submit]");
+  err.textContent = "";
+  const pw = $("#newPw").value;
+  if (pw.length < 10) return (err.textContent = "Use at least 10 characters.");
+  if (pw !== $("#newPw2").value) return (err.textContent = "The two passwords are not the same.");
+  btn.disabled = true;
+  try {
+    const r = await api("/api/setup", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ code: $("#setupCode").value, password: pw }) });
+    token = r.token; localStorage.setItem("pf_token", token);
+    e.target.reset();
+    await start();
+    toast("Password saved — welcome to your editor");
+  } catch (er) { err.textContent = er.message; }
+  finally { btn.disabled = false; }
+});
+
+// change password (signed in)
+const pwDlg = show => { $("#pwForm").hidden = !show; $("#pwBg").hidden = !show; $("#pwErr").textContent = ""; if (show) $("#curPw").focus(); else $("#pwForm").reset(); };
+$("#pwBtn").addEventListener("click", () => pwDlg(true));
+$("#pwCancel").addEventListener("click", () => pwDlg(false));
+$("#pwBg").addEventListener("click", () => pwDlg(false));
+$("#pwForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const err = $("#pwErr"), next = $("#chgPw").value;
+  if (next.length < 10) return (err.textContent = "Use at least 10 characters.");
+  if (next !== $("#chgPw2").value) return (err.textContent = "The two new passwords are not the same.");
+  try {
+    const r = await api("/api/password", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ current: $("#curPw").value, next }) });
+    token = r.token; localStorage.setItem("pf_token", token);
+    pwDlg(false); toast("Password changed. Other devices are signed out.");
+  } catch (er) { err.textContent = er.message; }
 });
 $("#logoutBtn").addEventListener("click", () => signOut("Signed out."));
 

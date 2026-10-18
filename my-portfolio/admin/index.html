@@ -26,6 +26,24 @@
       <p class="login-err" id="loginErr" role="alert"></p>
       <a class="back" href="/"><i class="fa-solid fa-arrow-left"></i> Back to the website</a>
     </form>
+
+    <!-- FIRST-TIME SETUP -->
+    <form id="setupForm" class="login-card" hidden>
+      <div class="brand"><span class="brand-dot">YF</span><div><b>Set up the editor</b><small>First time only · choose your password</small></div></div>
+      <p class="muted small" style="margin:0">Enter the one-time setup code from the file <b>EDITOR-SETUP-CODE.txt</b> in your portfolio folder, then choose your password.</p>
+      <label for="setupCode">Setup code</label>
+      <div class="pw-row"><input id="setupCode" type="text" autocomplete="off" spellcheck="false" placeholder="XXXX-XXXX" required /></div>
+      <label for="newPw">New password</label>
+      <div class="pw-row">
+        <input id="newPw" type="password" autocomplete="new-password" minlength="10" required />
+        <button type="button" class="pw-eye" data-for="newPw" aria-label="Show password"><i class="fa-solid fa-eye"></i></button>
+      </div>
+      <label for="newPw2">Type it again</label>
+      <div class="pw-row"><input id="newPw2" type="password" autocomplete="new-password" minlength="10" required /></div>
+      <p class="muted small" style="margin:0">At least 10 characters. Only a scrambled version is stored.</p>
+      <button class="btn btn-orange w-100" type="submit"><i class="fa-solid fa-key"></i> Save password &amp; open editor</button>
+      <p class="login-err" id="setupErr" role="alert"></p>
+    </form>
   </main>
 
   <!-- EDITOR -->
@@ -35,7 +53,8 @@
       <nav id="tabs" class="tabs"></nav>
       <div class="side-foot">
         <a class="side-link" href="/" target="_blank" rel="noreferrer"><i class="fa-solid fa-arrow-up-right-from-square"></i> View website</a>
-        <button class="side-link" id="logoutBtn" type="button"><i class="fa-solid fa-right-from-bracket"></i> Sign out</button>
+        <button class="side-link" id="pwBtn" type="button"><i class="fa-solid fa-key"></i> <span>Change password</span></button>
+        <button class="side-link" id="logoutBtn" type="button"><i class="fa-solid fa-right-from-bracket"></i> <span>Sign out</span></button>
       </div>
     </aside>
 
@@ -66,6 +85,26 @@
       <button class="btn btn-orange" id="saveBtn" type="button"><i class="fa-solid fa-floppy-disk"></i> Save &amp; publish</button>
     </footer>
   </section>
+
+  <!-- CHANGE PASSWORD -->
+  <div class="drawer-bg" id="pwBg" hidden></div>
+  <form id="pwForm" class="login-card pw-dialog" hidden>
+    <h2 style="font-size:1.3rem">Change password</h2>
+    <label for="curPw">Current password</label>
+    <div class="pw-row"><input id="curPw" type="password" autocomplete="current-password" required /></div>
+    <label for="chgPw">New password</label>
+    <div class="pw-row">
+      <input id="chgPw" type="password" autocomplete="new-password" minlength="10" required />
+      <button type="button" class="pw-eye" data-for="chgPw" aria-label="Show password"><i class="fa-solid fa-eye"></i></button>
+    </div>
+    <label for="chgPw2">Type it again</label>
+    <div class="pw-row"><input id="chgPw2" type="password" autocomplete="new-password" minlength="10" required /></div>
+    <p class="login-err" id="pwErr" role="alert"></p>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-ghost" type="button" id="pwCancel">Cancel</button>
+      <button class="btn btn-orange" type="submit"><i class="fa-solid fa-key"></i> Change</button>
+    </div>
+  </form>
 
   <div class="toast" id="toast" role="status"></div>
 

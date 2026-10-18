@@ -144,3 +144,6 @@ button{font:inherit}
   .thumb{width:48px; height:40px}
   .row-actions{grid-column:1 / -1; justify-content:flex-end}
 }
+
+/* change-password dialog */
+.pw-dialog{position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); z-index:70; width:min(420px,92vw)}
