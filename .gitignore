@@ -1,2 +1,5 @@
 .netlify/
 .git-broken-backup/
+node_modules/
+EDITOR-PASSWORD.txt
+.env

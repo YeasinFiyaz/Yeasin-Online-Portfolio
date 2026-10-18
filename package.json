@@ -1,0 +1,13 @@
+{
+  "name": "yeasin-online-portfolio",
+  "private": true,
+  "type": "module",
+  "description": "Yeasin Fiyaz portfolio: static site in my-portfolio/ + Netlify function for the private content editor",
+  "scripts": {
+    "dev": "netlify dev",
+    "set-password": "node scripts/set-password.mjs"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^10.0.0"
+  }
+}
