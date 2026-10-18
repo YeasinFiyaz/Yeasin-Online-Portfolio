@@ -2,29 +2,28 @@
 //
 //   GET  /api/content/:type        public  -> JSON array (projects|awards|publications|blog|experience)
 //   PUT  /api/content/:type        admin   -> replace the whole array
-//   GET  /api/setup                public  -> {needsSetup}
-//   POST /api/setup                {code, password} -> {token}   (first time only)
-//   POST /api/login                {password} -> {token}
-//   POST /api/password             admin   {current, next} -> {token}
-//   GET  /api/me                   admin   -> {ok:true}
+//   GET  /api/config               public  -> {googleClientId}
+//   POST /api/google               {credential} (Google ID token) -> {token, email, role}
+//   GET  /api/me                   admin   -> {email, role}
 //   POST /api/media                admin   raw image body -> {url}
 //   GET  /api/media/:key           public  -> the image
 //
-// Secrets (Netlify environment variables, never in git):
-//   TOKEN_SECRET         long random string used to sign login tokens
-//   SETUP_CODE_HASH      "scrypt$..." of the one-time setup code (only used before a password exists)
-//   ADMIN_PASSWORD_HASH  optional fallback password hash (normally unset)
-// The password chosen on the site is stored (hashed) in the "portfolio-auth" blob store.
+// Sign-in is "Sign in with Google". Only allowed Google accounts get in:
+//   SUPERADMIN (always): yeasinfiyaz@gmail.com
+//   ADMIN_EMAILS (optional env, comma separated): extra editors
+// Netlify environment variables:
+//   GOOGLE_CLIENT_ID     the OAuth Web client ID from Google Cloud (public value)
+//   TOKEN_SECRET         long random string used to sign editor sessions (secret)
 import { getStore } from "@netlify/blobs";
-import { scryptSync, timingSafeEqual, createHmac, randomBytes } from "node:crypto";
+import { timingSafeEqual, createHmac, randomBytes } from "node:crypto";
+
+const SUPERADMIN = "yeasinfiyaz@gmail.com";
 
 const TYPES = new Set(["projects", "awards", "publications", "blog", "experience"]);
 const MAX_JSON = 2 * 1024 * 1024;          // 2 MB per content type
 const MAX_MEDIA = 8 * 1024 * 1024;         // 8 MB per image
 const IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"]);
 const TOKEN_HOURS = 12;
-const LOGIN_LIMIT = 8;                     // failed attempts per IP ...
-const LOGIN_WINDOW_MS = 15 * 60 * 1000;    // ... per 15 minutes
 
 const json = (data, status = 200, extra = {}) =>
   new Response(JSON.stringify(data), {
@@ -34,39 +33,30 @@ const json = (data, status = 200, extra = {}) =>
 
 const b64url = buf => Buffer.from(buf).toString("base64url");
 
-/* ---------- password storage ---------- */
-const authStore = () => getStore("portfolio-auth");
-const hashPw = pw => { const salt = randomBytes(16); return `scrypt$${salt.toString("hex")}$${scryptSync(pw, salt, 32).toString("hex")}`; };
-function matches(pw, stored) {
-  const [algo, saltHex, hashHex] = String(stored || "").split("$");
-  if (algo !== "scrypt" || !saltHex || !hashHex || typeof pw !== "string" || !pw) return false;
-  const want = Buffer.from(hashHex, "hex");
-  return timingSafeEqual(scryptSync(pw, Buffer.from(saltHex, "hex"), want.length), want);
-}
-async function currentHash() {
-  return (await authStore().get("password")) || process.env.ADMIN_PASSWORD_HASH || "";
-}
-const validNewPassword = pw => typeof pw === "string" && pw.length >= 10 && pw.length <= 200;
+/* ---------- who may edit ---------- */
+const allowed = () => new Set([SUPERADMIN, ...String(process.env.ADMIN_EMAILS || "").split(",")].map(e => e.trim().toLowerCase()).filter(Boolean));
+const roleOf = email => (email === SUPERADMIN ? "superadmin" : "admin");
 
-/* ---------- tokens: signed with TOKEN_SECRET + the current password hash,
-   so changing the password signs out every other session ---------- */
-const keyFor = hash => `${process.env.TOKEN_SECRET}|${hash}`;
-function sign(hash) {
-  const body = b64url(JSON.stringify({ exp: Date.now() + TOKEN_HOURS * 3600 * 1000, n: b64url(randomBytes(9)) }));
-  return `${body}.${createHmac("sha256", keyFor(hash)).update(body).digest("base64url")}`;
+/* ---------- editor sessions (signed, 12 hours) ---------- */
+function sign(email) {
+  const body = b64url(JSON.stringify({ email, exp: Date.now() + TOKEN_HOURS * 3600 * 1000, n: b64url(randomBytes(9)) }));
+  return `${body}.${createHmac("sha256", process.env.TOKEN_SECRET).update(body).digest("base64url")}`;
 }
-async function isAdmin(req) {
+function session(req) {
   const token = (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
-  if (!token || !process.env.TOKEN_SECRET) return false;
+  if (!token || !process.env.TOKEN_SECRET) return null;
   const [body, mac] = token.split(".");
-  if (!body || !mac) return false;
-  const hash = await currentHash();
-  if (!hash) return false;
-  const good = createHmac("sha256", keyFor(hash)).update(body).digest();
+  if (!body || !mac) return null;
+  const good = createHmac("sha256", process.env.TOKEN_SECRET).update(body).digest();
   const given = Buffer.from(mac, "base64url");
-  if (given.length !== good.length || !timingSafeEqual(given, good)) return false;
-  try { return JSON.parse(Buffer.from(body, "base64url").toString()).exp > Date.now(); } catch { return false; }
+  if (given.length !== good.length || !timingSafeEqual(given, good)) return null;
+  try {
+    const p = JSON.parse(Buffer.from(body, "base64url").toString());
+    // still on the allow-list and not expired
+    return p.exp > Date.now() && allowed().has(p.email) ? p : null;
+  } catch { return null; }
 }
+const isAdmin = req => !!session(req);
 
 // Same-origin check for write requests (blocks cross-site form posts)
 function sameOrigin(req) {
@@ -75,58 +65,25 @@ function sameOrigin(req) {
   try { return new URL(origin).host === new URL(req.url).host; } catch { return false; }
 }
 
-/* ---------- brute-force protection (per IP) ---------- */
-async function limiter(req, context, scope) {
-  const ip = context.ip || req.headers.get("x-nf-client-connection-ip") || "unknown";
-  const key = `fail-${scope}-${ip.replace(/[^a-zA-Z0-9.:-]/g, "_")}`;
-  const now = Date.now();
-  const rec = (await authStore().get(key, { type: "json" })) || { n: 0, t: now };
-  if (now - rec.t > LOGIN_WINDOW_MS) { rec.n = 0; rec.t = now; }
-  return {
-    blocked: rec.n >= LOGIN_LIMIT,
-    fail: async () => { rec.n += 1; await authStore().setJSON(key, rec); await new Promise(r => setTimeout(r, 600)); },
-    clear: () => authStore().delete(key),
-  };
-}
-const tooMany = () => json({ error: "Too many attempts. Try again in 15 minutes." }, 429);
-const readBody = async req => { try { return await req.json(); } catch { return {}; } };
-
-async function login(req, context) {
-  const lim = await limiter(req, context, "login");
-  if (lim.blocked) return tooMany();
-  const body = await readBody(req);
-  const hash = await currentHash();
-  if (!hash) return json({ error: "No password yet. Use “Set up the editor” first." }, 409);
-  if (!matches(body.password, hash)) { await lim.fail(); return json({ error: "Wrong password" }, 401); }
-  await lim.clear();
-  return json({ token: sign(hash) });
-}
-
-async function setup(req, context) {
-  if (await currentHash()) return json({ error: "The editor is already set up. Please sign in." }, 409);
-  const lim = await limiter(req, context, "setup");
-  if (lim.blocked) return tooMany();
-  const body = await readBody(req);
-  const code = String(body.code || "").trim().toUpperCase();
-  if (!matches(code, process.env.SETUP_CODE_HASH)) { await lim.fail(); return json({ error: "Wrong setup code" }, 401); }
-  if (!validNewPassword(body.password)) return json({ error: "Use a password of at least 10 characters." }, 400);
-  const hash = hashPw(body.password);
-  await authStore().set("password", hash);
-  await lim.clear();
-  return json({ token: sign(hash) });
-}
-
-async function changePassword(req, context) {
-  if (!(await isAdmin(req))) return json({ error: "Not signed in" }, 401);
-  const lim = await limiter(req, context, "change");
-  if (lim.blocked) return tooMany();
-  const body = await readBody(req);
-  if (!matches(body.current, await currentHash())) { await lim.fail(); return json({ error: "Your current password is not correct" }, 401); }
-  if (!validNewPassword(body.next)) return json({ error: "Use a new password of at least 10 characters." }, 400);
-  const hash = hashPw(body.next);
-  await authStore().set("password", hash);
-  await lim.clear();
-  return json({ token: sign(hash) });
+/* ---------- Google sign-in: verify the ID token with Google ---------- */
+async function googleLogin(req) {
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  if (!clientId) return json({ error: "Google sign-in is not configured yet." }, 503);
+  let body = {};
+  try { body = await req.json(); } catch {}
+  const cred = String(body.credential || "");
+  if (!/^[\w-]+\.[\w-]+\.[\w-]+$/.test(cred)) return json({ error: "Invalid sign-in response" }, 400);
+  const r = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(cred)}`);
+  if (!r.ok) return json({ error: "Google could not confirm this sign-in. Please try again." }, 401);
+  const info = await r.json();
+  const email = String(info.email || "").toLowerCase();
+  const ok = info.aud === clientId
+    && ["accounts.google.com", "https://accounts.google.com"].includes(info.iss)
+    && (info.email_verified === true || info.email_verified === "true")
+    && Number(info.exp) * 1000 > Date.now();
+  if (!ok) return json({ error: "Google could not confirm this sign-in. Please try again." }, 401);
+  if (!allowed().has(email)) return json({ error: `${email} is not allowed to edit this portfolio.` }, 403);
+  return json({ token: sign(email), email, role: roleOf(email) });
 }
 
 export default async (req, context) => {
@@ -136,14 +93,14 @@ export default async (req, context) => {
   const method = req.method;
 
   try {
-    if (["login", "setup", "password"].includes(route) && method === "POST" && !sameOrigin(req)) return json({ error: "Bad origin" }, 403);
-    if (route === "login" && method === "POST") return await login(req, context);
-    if (route === "setup" && method === "POST") return await setup(req, context);
-    if (route === "setup" && method === "GET") return json({ needsSetup: !(await currentHash()) });
-    if (route === "password" && method === "POST") return await changePassword(req, context);
-
+    if (route === "config" && method === "GET") return json({ googleClientId: process.env.GOOGLE_CLIENT_ID || "" });
+    if (route === "google" && method === "POST") {
+      if (!sameOrigin(req)) return json({ error: "Bad origin" }, 403);
+      return await googleLogin(req);
+    }
     if (route === "me" && method === "GET") {
-      return (await isAdmin(req)) ? json({ ok: true }) : json({ error: "Not signed in" }, 401);
+      const s = session(req);
+      return s ? json({ email: s.email, role: roleOf(s.email) }) : json({ error: "Not signed in" }, 401);
     }
 
     if (route === "content" && TYPES.has(arg)) {
@@ -154,7 +111,7 @@ export default async (req, context) => {
         return json(data, 200, { "cache-control": "public, max-age=0, must-revalidate" });
       }
       if (method === "PUT") {
-        if (!(await isAdmin(req))) return json({ error: "Not signed in" }, 401);
+        if (!isAdmin(req)) return json({ error: "Not signed in" }, 401);
         if (!sameOrigin(req)) return json({ error: "Bad origin" }, 403);
         const text = await req.text();
         if (text.length > MAX_JSON) return json({ error: "Too large" }, 413);
@@ -172,7 +129,7 @@ export default async (req, context) => {
     if (route === "media") {
       const store = getStore("portfolio-media");
       if (method === "POST" && !arg) {
-        if (!(await isAdmin(req))) return json({ error: "Not signed in" }, 401);
+        if (!isAdmin(req)) return json({ error: "Not signed in" }, 401);
         if (!sameOrigin(req)) return json({ error: "Bad origin" }, 403);
         const type = (req.headers.get("content-type") || "").split(";")[0].trim().toLowerCase();
         if (!IMAGE_TYPES.has(type)) return json({ error: "Only JPG, PNG, WEBP, GIF or AVIF images" }, 415);

@@ -4,8 +4,7 @@
   "type": "module",
   "description": "Yeasin Fiyaz portfolio: static site in my-portfolio/ + Netlify function for the private content editor",
   "scripts": {
-    "dev": "netlify dev",
-    "new-setup-code": "node scripts/new-setup-code.mjs"
+    "dev": "netlify dev"
   },
   "dependencies": {
     "@netlify/blobs": "^10.0.0"

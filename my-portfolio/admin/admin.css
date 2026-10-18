@@ -147,3 +147,7 @@ button{font:inherit}
 
 /* change-password dialog */
 .pw-dialog{position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); z-index:70; width:min(420px,92vw)}
+.g-btn{display:flex; justify-content:center; min-height:44px; margin:8px 0}
+.who{display:flex; align-items:center; gap:10px; padding:10px 14px; color:#d8d4cd; font-size:.82rem; border-top:1px solid rgba(255,255,255,.08); margin-top:6px; word-break:break-all}
+.who i{color:var(--orange); font-size:1.2rem}
+.who small{display:block; color:#8b867e; font-size:.7rem; letter-spacing:.08em; text-transform:uppercase}
