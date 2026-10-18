@@ -243,8 +243,8 @@ async function renderProjects(targetId, onlyFeatured) {
   }
   observeNew(wrap);
 }
-renderProjects("featuredProjects", true);
-renderProjects("allProjects", false);
+const pageLoads = [];
+pageLoads.push(renderProjects("featuredProjects", true), renderProjects("allProjects", false));
 
 // 8) Awards page
 async function renderAwards() {
@@ -266,7 +266,7 @@ async function renderAwards() {
     </div>`).join("");
   observeNew(wrap);
 }
-renderAwards();
+pageLoads.push(renderAwards());
 
 // 9) Experience timeline + event detail pop-up
 const initials = s => {
@@ -318,7 +318,7 @@ async function renderExperience() {
   observeNew(wrap);
   wrap.querySelectorAll(".ev-card").forEach(b => b.addEventListener("click", () => openEvent(xpData[b.dataset.x], xpData[b.dataset.x].events[b.dataset.e])));
 }
-renderExperience();
+pageLoads.push(renderExperience());
 
 const modal = document.getElementById("eventModal");
 const lightbox = document.getElementById("lightbox");
@@ -381,7 +381,7 @@ async function renderBlog() {
   }
   observeNew(wrap);
 }
-renderBlog();
+pageLoads.push(renderBlog());
 
 async function renderPost() {
   const wrap = document.getElementById("postView");
@@ -403,7 +403,7 @@ async function renderPost() {
     ${safeUrl(p.cover) ? `<img class="post-cover" src="${esc(safeUrl(p.cover))}" alt="">` : ""}
     <div class="md post-content">${md(p.body)}</div>`;
 }
-renderPost();
+pageLoads.push(renderPost());
 
 // 11) Publications page
 async function renderPublications() {
@@ -431,7 +431,7 @@ async function renderPublications() {
   }
   observeNew(wrap);
 }
-renderPublications();
+pageLoads.push(renderPublications());
 
 // 11b) Site Settings (editable from the admin portal)
 const ICONS = {
@@ -497,7 +497,25 @@ drawRadar([
   { name: "Python", level: "Expert" }, { name: "Django", level: "Advanced" }, { name: "Machine Learning", level: "Advanced" },
   { name: "C / C++", level: "Intermediate" }, { name: "Java / JavaScript", level: "Advanced" },
 ]);
-applySettings();
+pageLoads.push(applySettings());
+
+// Links like index.html#contact: the browser jumps before projects/experience/settings
+// finish loading, which pushes the section further down. Jump again once the page is complete.
+function scrollToHash() {
+  if (userMoved || !location.hash || location.hash.length < 2) return;
+  let target;
+  try { target = document.querySelector(location.hash); } catch { return; }
+  if (target) target.scrollIntoView({ behavior: "instant", block: "start" });
+}
+Promise.allSettled(pageLoads).then(() => {
+  requestAnimationFrame(scrollToHash);
+  // late images/fonts can still shift things a little
+  addEventListener("load", scrollToHash, { once: true });
+  if (document.fonts) document.fonts.ready.then(scrollToHash);
+});
+// never pull the visitor back once they start scrolling on their own
+let userMoved = false;
+["wheel", "touchstart", "keydown", "mousedown"].forEach(ev => addEventListener(ev, () => (userMoved = true), { once: true, passive: true }));
 
 // 12) Contact form => mailto
 const form = document.getElementById("contactForm");
