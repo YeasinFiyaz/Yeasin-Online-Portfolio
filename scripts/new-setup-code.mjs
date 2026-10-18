@@ -13,6 +13,8 @@ import { getStore } from "@netlify/blobs";
 const SITE = "d5f33078-5042-437a-8986-81e8c8c072c3";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const run = args => execFileSync("netlify", args, { stdio: "inherit", shell: true, cwd: ROOT });
+// secrets: never echo them to the screen
+const runQuiet = args => execFileSync("netlify", args, { stdio: "ignore", shell: true, cwd: ROOT });
 
 // readable code without look-alike characters, e.g. K7PM-2QXH
 const ABC = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
@@ -28,9 +30,9 @@ if (!token) { console.error("Not logged in to Netlify on this PC. Run: netlify l
 await getStore({ name: "portfolio-auth", siteID: SITE, token }).delete("password");
 
 // 2) new setup code (only a scrambled version goes to Netlify) + a fresh signing key (signs out every session)
-run(["env:set", "SETUP_CODE_HASH", codeHash, "--site", SITE, "--force"]);
-run(["env:set", "TOKEN_SECRET", randomBytes(32).toString("hex"), "--site", SITE, "--force"]);
-run(["env:unset", "ADMIN_PASSWORD_HASH", "--site", SITE, "--force"]);
+runQuiet(["env:set", "SETUP_CODE_HASH", codeHash, "--site", SITE, "--force"]);
+runQuiet(["env:set", "TOKEN_SECRET", randomBytes(32).toString("hex"), "--site", SITE, "--force"]);
+runQuiet(["env:unset", "ADMIN_PASSWORD_HASH", "--site", SITE, "--force"]);
 
 // 3) save the code locally (this file is never uploaded to GitHub)
 writeFileSync(join(ROOT, "EDITOR-SETUP-CODE.txt"),
