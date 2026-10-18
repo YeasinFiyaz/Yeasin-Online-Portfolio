@@ -126,7 +126,7 @@ body.cursor-hover .cursor-ring{width:64px; height:64px; opacity:.35; background:
 .hero-name{font-family:var(--font-display); font-weight:900; font-stretch:115%; text-transform:uppercase; line-height:.84; letter-spacing:-.035em; font-size:clamp(68px,9.4vw,158px); margin:0}
 .hero-name .hero-line{display:block; white-space:nowrap}
 .hero-name .hero-line span{display:inline-block; opacity:0; transform:translateY(70px) rotate(3deg); animation:letterIn .9s var(--ease) forwards}
-.hero-name .n2 span{color:transparent; -webkit-text-stroke:2.5px var(--ink)}
+.hero-name .n2 span{color:transparent; -webkit-text-stroke:4px var(--ink)}
 .hero-name .n2 span.dot{color:var(--orange); -webkit-text-stroke:0}
 @keyframes letterIn{to{opacity:1; transform:none}}
 .hero-role{margin:26px 0 0; font-size:clamp(18px,1.7vw,24px); font-weight:600; min-height:1.5em; display:flex; align-items:center; gap:12px}
@@ -176,7 +176,7 @@ body.cursor-hover .cursor-ring{width:64px; height:64px; opacity:.35; background:
 @media (max-width:575px){
   .hero{padding:96px 0 40px; min-height:0}
   .hero-name{font-size:clamp(56px,19vw,96px)}
-  .hero-name .n2 span{-webkit-text-stroke:2px var(--ink)}
+  .hero-name .n2 span{-webkit-text-stroke:2.5px var(--ink)}
   .hero-visual{height:420px}
   .hv-chip{font-size:.75rem; padding:8px 10px}
   .hv-chip i{width:28px; height:28px}
