@@ -64,12 +64,12 @@
             <span class="hero-line n2">FIYAZ<b class="dot">.</b></span>
           </h1>
           <p class="hero-role"><span id="roleText"></span><span class="caret"></span></p>
-          <p class="hero-desc reveal" data-delay="1">Data Analyst &amp; AI Engineer at <b>ESB Power Line</b>. I turn data into products: from Bangladesh's power-sector news &amp; data portal to machine-learning apps and medical-imaging research.</p>
+          <p class="hero-desc reveal" data-delay="1" id="sHeroIntro">Data Analyst &amp; AI Engineer at <b>ESB Power Line</b>. I turn data into products: from Bangladesh's power-sector news &amp; data portal to machine-learning apps and medical-imaging research.</p>
           <div class="hero-actions reveal" data-delay="2">
             <a class="btn btn-ink btn-lg" href="#projects">View My Work <i class="fa-solid fa-arrow-right ms-2"></i></a>
             <a class="btn btn-outline btn-lg" data-cv href="#" target="_blank" rel="noreferrer"><i class="fa-solid fa-download me-2"></i>Download CV</a>
           </div>
-          <div class="hero-meta reveal" data-delay="3">
+          <div class="hero-meta reveal" data-delay="3" id="sHeroMeta">
             <div>Currently<b>ESB Power Line</b></div>
             <div>Education<b>BSc CSE, BRAC University</b></div>
             <div>Based in<b>Dhaka, Bangladesh</b></div>
@@ -115,13 +115,13 @@
         <div class="col-lg-6 reveal">
           <p class="eyebrow">Hello</p>
           <h2 class="title">I'm Yeasin <span class="o">Fiyaz</span></h2>
-          <p class="lead-text">
+          <p class="lead-text" id="sAbout">
             I'm a <b style="color:#fff">Data Analyst &amp; AI Engineer at ESB Power Line</b> and a Computer Science &amp; Engineering graduate of BRAC University.
             I build AI and data products end to end — models, APIs and the web apps people actually use — and I'm passionate about AI-driven healthcare,
             NLP and turning messy real-world data into decisions.
           </p>
 
-          <ul class="stat-list">
+          <ul class="stat-list" id="sStats">
             <li><span class="chk"><i class="fa-solid fa-check"></i></span><b class="count" data-end="13" data-count="projects">0</b><span>Projects Built</span></li>
             <li><span class="chk"><i class="fa-solid fa-check"></i></span><b class="count" data-end="4">0</b><span>Live Apps in Production</span></li>
             <li><span class="chk"><i class="fa-solid fa-check"></i></span><b class="count" data-end="5">0</b><span>Years in Leadership Roles</span></li>
@@ -135,12 +135,12 @@
 
           <hr class="sep" />
           <p class="eyebrow" style="margin-bottom:8px">Education</p>
-          <div class="mini-title">BSc in Computer Science &amp; Engineering</div>
-          <p class="mini-text">BRAC University • Graduated 2026 • Thesis: multimodal deep learning on chest X-rays &amp; clinical data (supervised by Dr. Swakkhar Shatabda)</p>
-          <p class="mini-text mt-1">HSC &amp; SSC — Engineering University School and College</p>
+          <div class="mini-title" id="sEduTitle">BSc in Computer Science &amp; Engineering</div>
+          <p class="mini-text" id="sEduText">BRAC University • Graduated 2026 • Thesis: multimodal deep learning on chest X-rays &amp; clinical data (supervised by Dr. Swakkhar Shatabda)</p>
+          <p class="mini-text mt-1" id="sSchool">HSC &amp; SSC — Engineering University School and College</p>
           <hr class="sep" />
           <p class="eyebrow" style="margin-bottom:8px">Interests</p>
-          <div class="chip-row">
+          <div class="chip-row" id="sInterests">
             <span class="chip"><i class="fa-solid fa-gamepad me-2"></i>Gaming</span>
             <span class="chip"><i class="fa-solid fa-robot me-2"></i>Machine Learning</span>
             <span class="chip"><i class="fa-solid fa-rocket me-2"></i>Aerospace</span>
@@ -218,14 +218,14 @@
               <svg id="skillRadar" viewBox="0 0 400 340" role="img" aria-label="Skill radar: Python expert; Django, Machine Learning and Java/JavaScript advanced; C/C++ intermediate"></svg>
               <div class="radar-tip" role="status"></div>
             </div>
-            <div class="levels">
+            <div class="levels" id="sLevels">
               <div class="lvl"><span class="lvl-name"><span class="lvl-dots"><i class="on"></i><i class="on"></i><i class="on"></i></span>Expert</span><div class="chip-row"><span class="chip"><i class="fa-brands fa-python me-2"></i>Python</span></div></div>
               <div class="lvl"><span class="lvl-name"><span class="lvl-dots"><i class="on"></i><i class="on"></i><i></i></span>Advanced</span><div class="chip-row"><span class="chip"><i class="fa-solid fa-leaf me-2"></i>Django</span><span class="chip"><i class="fa-solid fa-brain me-2"></i>Machine Learning</span><span class="chip"><i class="fa-brands fa-js me-2"></i>Java / JavaScript</span></div></div>
               <div class="lvl"><span class="lvl-name"><span class="lvl-dots"><i class="on"></i><i></i><i></i></span>Intermediate</span><div class="chip-row"><span class="chip"><i class="fa-solid fa-c me-2"></i>C / C++</span></div></div>
             </div>
             <hr class="sep" />
             <h5 class="mini-title">Soft Skills</h5>
-            <div class="chip-row mt-2">
+            <div class="chip-row mt-2" id="sSoft">
               <span class="chip"><i class="fa-solid fa-people-group me-2"></i>Leadership</span>
               <span class="chip"><i class="fa-solid fa-microphone me-2"></i>Public Speaking</span>
               <span class="chip"><i class="fa-solid fa-calendar-check me-2"></i>Event Management</span>
@@ -236,7 +236,7 @@
         <div class="col-lg-7 reveal" data-delay="1">
           <div class="cardx">
             <h5 class="mini-title">Tools &amp; Technologies</h5>
-            <div class="tech-grid mt-3">
+            <div class="tech-grid mt-3" id="sTools">
               <div class="tech"><i class="fa-brands fa-python"></i>Python</div>
               <div class="tech"><i class="fa-solid fa-fire"></i>PyTorch</div>
               <div class="tech"><i class="fa-solid fa-network-wired"></i>TensorFlow</div>
@@ -256,7 +256,7 @@
             </div>
             <hr class="sep" />
             <h5 class="mini-title">What I'm aiming for</h5>
-            <p class="mini-text">A strong foundation in software plus growing depth in AI and research, to build systems that matter.</p>
+            <p class="mini-text" id="sAiming">A strong foundation in software plus growing depth in AI and research, to build systems that matter.</p>
           </div>
         </div>
       </div>
@@ -327,15 +327,15 @@
         </div>
         <div class="col-lg-5 reveal" data-delay="1">
           <ul class="contact-list">
-            <li><span class="contact-icon"><i class="fa-solid fa-phone"></i></span><a href="tel:+8801903571637">+880 1903-571637</a></li>
-            <li><span class="contact-icon"><i class="fa-solid fa-envelope"></i></span><a href="mailto:yeasinfiyaz@gmail.com">yeasinfiyaz@gmail.com</a></li>
+            <li><span class="contact-icon"><i class="fa-solid fa-phone"></i></span><a href="tel:+8801903571637" id="sPhone">+880 1903-571637</a></li>
+            <li><span class="contact-icon"><i class="fa-solid fa-envelope"></i></span><a href="mailto:yeasinfiyaz@gmail.com" id="sEmail">yeasinfiyaz@gmail.com</a></li>
             <li><span class="contact-icon"><i class="fa-solid fa-location-dot"></i></span><span>Dhaka, Bangladesh</span></li>
           </ul>
           <hr class="sep" />
           <div class="d-flex gap-3 flex-wrap">
-            <a class="social" target="_blank" rel="noreferrer" href="https://www.linkedin.com/in/yeasin-fiyaz-62bb12232/" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-            <a class="social" target="_blank" rel="noreferrer" href="https://github.com/YeasinFiyaz" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
-            <a class="social" href="mailto:yeasinfiyaz@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+            <a class="social" target="_blank" rel="noreferrer" data-s="linkedin" href="https://www.linkedin.com/in/yeasin-fiyaz-62bb12232/" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a class="social" target="_blank" rel="noreferrer" data-s="github" href="https://github.com/YeasinFiyaz" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a class="social" data-s="mail" href="mailto:yeasinfiyaz@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
           </div>
         </div>
       </div>
@@ -346,9 +346,9 @@
     <div class="container d-flex flex-wrap align-items-center justify-content-between gap-2">
       <div><span class="made">Yeasin Fiyaz</span> &nbsp;•&nbsp; © <span data-year></span> All rights reserved.</div>
       <div class="d-flex gap-3">
-        <a href="https://www.linkedin.com/in/yeasin-fiyaz-62bb12232/" target="_blank" rel="noreferrer"><i class="fa-brands fa-linkedin"></i></a>
-        <a href="https://github.com/YeasinFiyaz" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i></a>
-        <a href="mailto:yeasinfiyaz@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+        <a data-s="linkedin" href="https://www.linkedin.com/in/yeasin-fiyaz-62bb12232/" target="_blank" rel="noreferrer"><i class="fa-brands fa-linkedin"></i></a>
+        <a data-s="github" href="https://github.com/YeasinFiyaz" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i></a>
+        <a data-s="mail" href="mailto:yeasinfiyaz@gmail.com"><i class="fa-solid fa-envelope"></i></a>
       </div>
     </div>
   </footer>

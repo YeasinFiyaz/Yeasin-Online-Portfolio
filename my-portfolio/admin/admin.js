@@ -89,11 +89,40 @@ const SCHEMAS = {
     ],
   },
 };
-const ORDER = ["projects", "awards", "experience", "blog", "publications"];
+SCHEMAS.settings = {
+  label: "Site Settings", icon: "fa-sliders", single: true,
+  hint: "Your header, About text, stats, education, skills, tools, contact details and links. One click on Edit opens everything.",
+  title: () => "Home page & contact details", sub: i => [i.currently, i.basedIn, i.email].filter(Boolean).join(" · "),
+  fields: [
+    { k: "heroRoles", t: "lines", l: "Typing roles in the header (one per line)" },
+    { k: "heroIntro", t: "textarea", l: "Header introduction", help: "Wrap words in **double stars** to make them bold." },
+    { k: "currently", t: "text", l: "Currently (company)", half: true },
+    { k: "basedIn", t: "text", l: "Based in", half: true },
+    { k: "educationShort", t: "text", l: "Education (short, shown in the header)" },
+    { k: "about", t: "textarea", l: "About me (Hello section)", rows: 5, help: "**Bold** works here too." },
+    { k: "stats", t: "items", l: "Stats (Hello section)", add: "Add stat", itemTitle: x => `${x.value ?? ""} ${x.label || "New stat"}`,
+      fields: [{ k: "value", t: "number", l: "Number", half: true }, { k: "label", t: "text", l: "Label", req: true, half: true }] },
+    { k: "eduTitle", t: "text", l: "Degree" },
+    { k: "eduText", t: "textarea", l: "University line", rows: 2 },
+    { k: "school", t: "text", l: "School / college line" },
+    { k: "interests", t: "tags", l: "Interests" },
+    { k: "skills", t: "items", l: "Proficiency (radar chart)", add: "Add skill", itemTitle: x => `${x.name || "New skill"} — ${x.level || ""}`,
+      fields: [{ k: "name", t: "text", l: "Skill", req: true, half: true }, { k: "level", t: "select", l: "Level", opts: ["Expert", "Advanced", "Intermediate", "Beginner"], half: true }] },
+    { k: "softSkills", t: "tags", l: "Soft skills" },
+    { k: "tools", t: "tags", l: "Tools & technologies" },
+    { k: "aiming", t: "textarea", l: "What I'm aiming for", rows: 2 },
+    { k: "phone", t: "text", l: "Phone", half: true },
+    { k: "email", t: "text", l: "Contact email", half: true },
+    { k: "linkedin", t: "url", l: "LinkedIn link", half: true },
+    { k: "github", t: "url", l: "GitHub link", half: true },
+    { k: "cv", t: "url", l: "CV download link", help: "A Google Drive / OneDrive share link to your CV." },
+  ],
+};
+const ORDER = ["settings", "projects", "awards", "experience", "blog", "publications"];
 
 /* ---------- state ---------- */
 let token = localStorage.getItem("pf_token") || "";
-let current = "projects";
+let current = "settings";
 const data = {};
 const fromServer = {};
 
@@ -102,7 +131,7 @@ async function api(path, opts = {}) {
   const res = await fetch(path, { ...opts, headers: { ...(opts.headers || {}), ...(token ? { authorization: `Bearer ${token}` } : {}) } });
   let body = null;
   try { body = await res.json(); } catch {}
-  if (res.status === 401 && path !== "/api/google") { signOut("Your session ended. Please sign in again."); throw new Error("signed out"); }
+  if (res.status === 401 && !path.startsWith("/api/auth/")) { signOut("Your session ended. Please sign in again."); throw new Error("signed out"); }
   if (!res.ok) throw new Error((body && body.error) || `Error ${res.status}`);
   return body;
 }
@@ -131,36 +160,59 @@ function toast(msg, err) {
   clearTimeout(toastT); toastT = setTimeout(() => (t.className = "toast"), 3200);
 }
 
-/* ---------- auth: Sign in with Google ---------- */
-let gReady = null;
-async function showGoogleButton() {
-  const box = $("#gBtn");
-  try {
-    const cfg = await (await fetch("/api/config", { cache: "no-store" })).json();
-    if (!cfg.googleClientId) { box.innerHTML = '<p class="muted small">Google sign-in is not configured yet.</p>'; return; }
-    await (gReady ||= new Promise(r => { const t = setInterval(() => { if (window.google?.accounts?.id) { clearInterval(t); r(); } }, 100); }));
-    google.accounts.id.initialize({ client_id: cfg.googleClientId, callback: onGoogle, ux_mode: "popup", auto_select: false });
-    box.innerHTML = "";
-    google.accounts.id.renderButton(box, { theme: "filled_black", size: "large", shape: "pill", text: "signin_with", width: 300 });
-  } catch { box.innerHTML = '<p class="login-err">Could not load Google sign-in. Check your internet and reload.</p>'; }
-}
-async function onGoogle(resp) {
-  $("#loginErr").textContent = "";
-  try {
-    const r = await api("/api/google", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ credential: resp.credential }) });
-    token = r.token; localStorage.setItem("pf_token", token);
-    await start(r);
-    toast(`Signed in as ${r.email}`);
-  } catch (err) { $("#loginErr").textContent = err.message; }
-}
-function signOut(msg) {
+/* ---------- auth: email + password ---------- */
+const post = (path, body) => api(path, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+async function signOut(msg) {
   token = ""; localStorage.removeItem("pf_token");
-  try { google.accounts.id.disableAutoSelect(); } catch {}
   $("#appView").hidden = true; $("#loginView").hidden = false;
   closeDrawer(true);
-  $("#loginErr").textContent = msg || "";
-  showGoogleButton();
+  let hasAccount = true;
+  try { hasAccount = (await (await fetch("/api/auth/status", { cache: "no-store" })).json()).hasAccount; } catch {}
+  $("#loginForm").hidden = !hasAccount; $("#setupForm").hidden = hasAccount;
+  $("#loginErr").textContent = hasAccount ? (msg || "") : "";
+  (hasAccount ? ($("#email").value ? $("#pw") : $("#email")) : $("#newPw")).focus();
 }
+const signedIn = async r => { token = r.token; localStorage.setItem("pf_token", token); await start(r); };
+
+$("#loginForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const btn = e.target.querySelector("button[type=submit]"); btn.disabled = true; $("#loginErr").textContent = "";
+  try { await signedIn(await post("/api/auth/login", { email: $("#email").value, password: $("#pw").value })); $("#pw").value = ""; }
+  catch (err) { $("#loginErr").textContent = err.message; }
+  finally { btn.disabled = false; }
+});
+$("#setupForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const err = $("#setupErr"), btn = e.target.querySelector("button[type=submit]"), pw = $("#newPw").value;
+  err.textContent = "";
+  if (pw.length < 8) return (err.textContent = "Use at least 8 characters.");
+  if (pw !== $("#newPw2").value) return (err.textContent = "The two passwords are not the same.");
+  btn.disabled = true;
+  try { await signedIn(await post("/api/auth/setup", { email: $("#sEmailIn").value, password: pw })); e.target.reset(); toast("Admin account created. Welcome!"); }
+  catch (er) { err.textContent = er.message; }
+  finally { btn.disabled = false; }
+});
+document.querySelectorAll(".pw-eye").forEach(b => b.addEventListener("click", () => {
+  const i = document.getElementById(b.dataset.for); i.type = i.type === "password" ? "text" : "password";
+  b.querySelector("i").className = i.type === "password" ? "fa-solid fa-eye" : "fa-solid fa-eye-slash";
+}));
+
+// change password
+const pwDlg = show => { $("#pwForm").hidden = !show; $("#pwBg").hidden = !show; $("#pwErr").textContent = ""; if (show) $("#curPw").focus(); else $("#pwForm").reset(); };
+$("#pwBtn").addEventListener("click", () => pwDlg(true));
+$("#pwCancel").addEventListener("click", () => pwDlg(false));
+$("#pwBg").addEventListener("click", () => pwDlg(false));
+$("#pwForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const err = $("#pwErr"), next = $("#chgPw").value;
+  if (next.length < 8) return (err.textContent = "Use at least 8 characters.");
+  if (next !== $("#chgPw2").value) return (err.textContent = "The two new passwords are not the same.");
+  try {
+    const r = await post("/api/auth/password", { current: $("#curPw").value, next });
+    token = r.token; localStorage.setItem("pf_token", token);
+    pwDlg(false); toast("Password changed. Other devices are signed out.");
+  } catch (er) { err.textContent = er.message; }
+});
 $("#logoutBtn").addEventListener("click", () => signOut("Signed out."));
 
 /* ---------- list view ---------- */
@@ -173,6 +225,8 @@ function renderList() {
   $("#tabTitle").textContent = S.label;
   $("#tabHint").textContent = S.hint;
   $("#addBtn span").textContent = current === "blog" ? "New post" : "Add new";
+  $("#addBtn").hidden = !!S.single;
+  if (S.single && !items.length) items.push({ id: "site" });
   const n = $("#notice");
   n.hidden = fromServer[current] !== false;
   n.innerHTML = `<i class="fa-solid fa-circle-info"></i> This list is the content currently on your website. Your first save will move it into the editor.`;
@@ -183,13 +237,13 @@ function renderList() {
     return `<div class="row ${it.hidden ? "is-hidden" : ""}" data-i="${i}">
       <div class="thumb" ${th ? `style="background-image:url('${esc(th)}')"` : ""}>${th ? "" : `<i class="fa-solid ${S.icon}"></i>`}</div>
       <div><div class="row-title">${esc(S.title(it) || "(untitled)")}${badges.map(([c, t]) => `<span class="badge ${c}">${t}</span>`).join("")}</div><div class="row-sub">${esc(S.sub(it))}</div></div>
-      <div class="row-actions">
+      <div class="row-actions">${S.single ? `<button class="btn btn-ink" data-a="edit"><i class="fa-solid fa-pen"></i> Edit</button></div></div>` : `
         <button class="icon-btn" data-a="up" title="Move up" ${i === 0 ? "disabled" : ""}><i class="fa-solid fa-arrow-up"></i></button>
         <button class="icon-btn" data-a="down" title="Move down" ${i === items.length - 1 ? "disabled" : ""}><i class="fa-solid fa-arrow-down"></i></button>
         <button class="icon-btn" data-a="hide" title="${it.hidden ? "Show on website" : "Hide from website"}"><i class="fa-solid ${it.hidden ? "fa-eye-slash" : "fa-eye"}"></i></button>
         <button class="icon-btn" data-a="edit" title="Edit"><i class="fa-solid fa-pen"></i></button>
         <button class="icon-btn danger" data-a="del" title="Delete"><i class="fa-solid fa-trash"></i></button>
-      </div></div>`;
+      </div></div>`}`;
   }).join("");
   $("#list").querySelectorAll(".row").forEach(row => {
     const i = +row.dataset.i;
@@ -236,6 +290,8 @@ function fieldHtml(f, v, path) {
       return `<div class="${cls}" data-k="${path}"><label for="${id}">${esc(f.l)}</label><select id="${id}"><option value=""></option>${f.opts.map(o => `<option ${o === v ? "selected" : ""}>${esc(o)}</option>`).join("")}</select></div>`;
     case "bool":
       return `<div class="field" data-k="${path}"><span class="lbl">&nbsp;</span><label class="check"><input type="checkbox" ${v ? "checked" : ""} /> ${esc(f.l)}</label></div>`;
+    case "lines":
+      return `<div class="${cls}" data-k="${path}"><label for="${id}">${esc(f.l)}</label><textarea id="${id}" rows="${f.rows || 4}">${esc((v || []).join("\n"))}</textarea>${help}</div>`;
     case "tags":
       return `<div class="${cls}" data-k="${path}"><label for="${id}">${esc(f.l)}</label><input id="${id}" type="text" value="${esc((v || []).join(", "))}"${ph} /><span class="help">Separate with commas.</span></div>`;
     case "image":
@@ -298,6 +354,7 @@ function readFields(fields, root, prefix, target) {
     }
     if (f.t === "bool") target[f.k] = el.querySelector("input").checked;
     else if (f.t === "tags") target[f.k] = el.querySelector("input").value.split(",").map(s => s.trim()).filter(Boolean);
+    else if (f.t === "lines") target[f.k] = el.querySelector("textarea").value.split("\n").map(s => s.trim()).filter(Boolean);
     else if (f.t === "photos") target[f.k] = [...el.querySelectorAll(".photo")].map(p => p.dataset.url);
     else if (f.t === "image") target[f.k] = el.querySelector("input[type=text]").value.trim();
     else if (f.t === "markdown") target[f.k] = el.querySelector("textarea").value;
@@ -333,7 +390,7 @@ function openDrawer(index) {
   if (index == null && current === "blog") obj.date = new Date().toISOString().slice(0, 10);
   draft = { index, obj, _items: {} };
   S.fields.filter(f => f.t === "items").forEach(f => (draft._items[f.k] = obj[f.k] || []));
-  $("#drawerTitle").textContent = index == null ? `New ${S.label.replace(/s$/, "").toLowerCase()}` : `Edit ${S.label.replace(/s$/, "").toLowerCase()}`;
+  $("#drawerTitle").textContent = S.single ? S.label : index == null ? `New ${S.label.replace(/s$/, "").toLowerCase()}` : `Edit ${S.label.replace(/s$/, "").toLowerCase()}`;
   renderForm();
   $("#drawerStatus").textContent = obj.hidden ? (current === "blog" ? "Draft — not visible on the website" : "Hidden from the website") : "";
   $("#drawerBg").hidden = false;

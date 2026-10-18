@@ -1,0 +1,36 @@
+[
+  {
+    "id": "site",
+    "heroRoles": ["AI Engineer & Data Analyst", "Full-Stack Developer", "Machine Learning Researcher", "CSE Graduate, BRAC University"],
+    "heroIntro": "Data Analyst & AI Engineer at **ESB Power Line**. I turn data into products: from Bangladesh's power-sector news & data portal to machine-learning apps and medical-imaging research.",
+    "currently": "ESB Power Line",
+    "educationShort": "BSc CSE, BRAC University",
+    "basedIn": "Dhaka, Bangladesh",
+    "about": "I'm a **Data Analyst & AI Engineer at ESB Power Line** and a Computer Science & Engineering graduate of BRAC University. I build AI and data products end to end — models, APIs and the web apps people actually use — and I'm passionate about AI-driven healthcare, NLP and turning messy real-world data into decisions.",
+    "stats": [
+      { "id": "s1", "value": 13, "label": "Projects Built", "auto": "projects" },
+      { "id": "s2", "value": 4, "label": "Live Apps in Production" },
+      { "id": "s3", "value": 5, "label": "Years in Leadership Roles" },
+      { "id": "s4", "value": 40, "label": "Institutions Hosted at a Science Fair" }
+    ],
+    "eduTitle": "BSc in Computer Science & Engineering",
+    "eduText": "BRAC University • Graduated 2026 • Thesis: multimodal deep learning on chest X-rays & clinical data (supervised by Dr. Swakkhar Shatabda)",
+    "school": "HSC & SSC — Engineering University School and College",
+    "interests": ["Gaming", "Machine Learning", "Aerospace", "Cycling"],
+    "skills": [
+      { "id": "k1", "name": "Python", "level": "Expert" },
+      { "id": "k2", "name": "Django", "level": "Advanced" },
+      { "id": "k3", "name": "Machine Learning", "level": "Advanced" },
+      { "id": "k4", "name": "C / C++", "level": "Intermediate" },
+      { "id": "k5", "name": "Java / JavaScript", "level": "Advanced" }
+    ],
+    "softSkills": ["Leadership", "Public Speaking", "Event Management", "Teamwork"],
+    "tools": ["Python", "PyTorch", "TensorFlow", "XGBoost", "Django REST", "FastAPI", "Spring Boot", "React", "Node.js", "JavaScript", "MySQL", "PostgreSQL", "Redis", "WebSocket", "JWT Auth", "Git"],
+    "aiming": "A strong foundation in software plus growing depth in AI and research, to build systems that matter.",
+    "phone": "+880 1903-571637",
+    "email": "yeasinfiyaz@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/yeasin-fiyaz-62bb12232/",
+    "github": "https://github.com/YeasinFiyaz",
+    "cv": "https://drive.google.com/uc?export=download&id=1twtHTj5geSqqibd8J6Qvk490hM08cCRl"
+  }
+]

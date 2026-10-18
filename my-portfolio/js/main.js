@@ -1,6 +1,6 @@
 /* ===== Yeasin Fiyaz Portfolio — main.js ===== */
 
-// 1) CV link (Google Drive / Dropbox / OneDrive share link)
+// 1) CV link (default; Site Settings can change it)
 const CV_LINK = "https://drive.google.com/uc?export=download&id=1twtHTj5geSqqibd8J6Qvk490hM08cCRl";
 document.querySelectorAll("[data-cv]").forEach(a => (a.href = CV_LINK));
 
@@ -64,17 +64,17 @@ document.querySelectorAll(".hero-name .hero-line").forEach((line, li) => {
   line.querySelectorAll("span").forEach((s, i) => (s.style.animationDelay = (0.2 + li * 0.3 + i * 0.06) + "s"));
 });
 
-const roles = ["AI Engineer & Data Analyst", "Full-Stack Developer", "Machine Learning Researcher", "CSE Graduate, BRAC University"];
 const roleText = document.getElementById("roleText");
+let roles = ["AI Engineer & Data Analyst", "Full-Stack Developer", "Machine Learning Researcher", "CSE Graduate, BRAC University"];
 if (roleText) {
   let r = 0, c = 0, deleting = false;
   const tick = () => {
-    const word = roles[r];
+    const word = roles[r % roles.length] || "";
     c += deleting ? -1 : 1;
     roleText.textContent = word.slice(0, c);
     let delay = deleting ? 35 : 65;
-    if (!deleting && c === word.length) { delay = 1900; deleting = true; }
-    else if (deleting && c === 0) { deleting = false; r = (r + 1) % roles.length; delay = 350; }
+    if (!deleting && c >= word.length) { delay = 1900; deleting = true; }
+    else if (deleting && c <= 0) { deleting = false; r = (r + 1) % roles.length; delay = 350; }
     setTimeout(tick, delay);
   };
   setTimeout(tick, 1200);
@@ -90,16 +90,13 @@ if (heroVisual && matchMedia("(hover:hover)").matches) {
   }, { passive: true });
 }
 
-// 4b) Skill radar (shape only, no numbers; levels shown on hover)
-const radar = document.getElementById("skillRadar");
-if (radar) {
-  const skills = [
-    { n: "Python", v: 0.9, l: "Expert" },
-    { n: "Django", v: 0.8, l: "Advanced" },
-    { n: "Machine Learning", v: 0.7, l: "Advanced" },
-    { n: "C / C++", v: 0.6, l: "Intermediate" },
-    { n: "Java / JS", v: 0.75, l: "Advanced" },
-  ];
+// 4b) Skill radar (shape only, no numbers; levels shown on hover) — drawn from Site Settings
+const LEVEL_VALUE = { Expert: 0.92, Advanced: 0.75, Intermediate: 0.55, Beginner: 0.35 };
+function drawRadar(list) {
+  const radar = document.getElementById("skillRadar");
+  if (!radar) return;
+  const skills = list.filter(s => s && s.name).map(s => ({ n: s.name.replace("Java / JavaScript", "Java / JS"), v: LEVEL_VALUE[s.level] || 0.6, l: s.level || "" }));
+  if (skills.length < 3) { radar.innerHTML = ""; return; }
   const cx = 200, cy = 170, R = 118, N = skills.length;
   const pt = (i, r) => {
     const a = -Math.PI / 2 + (i * 2 * Math.PI) / N;
@@ -115,14 +112,16 @@ if (radar) {
     svg += `<circle class="hit" data-i="${i}" cx="${x}" cy="${y}" r="16"/><circle class="pt" cx="${x}" cy="${y}" r="5.5"/>`;
   });
   svg += `</g>`;
+  const escT = t => String(t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   skills.forEach((s, i) => {
     const [x, y] = pt(i, R + 24);
     const anchor = Math.abs(x - cx) < 8 ? "middle" : x > cx ? "start" : "end";
     const dy = y < cy - 40 ? -6 : y > cy + 40 ? 14 : 4;
-    svg += `<text class="lbl" x="${x}" y="${y + dy}" text-anchor="${anchor}">${s.n}</text>`;
-    svg += `<text class="lbl-sub" x="${x}" y="${y + dy + 15}" text-anchor="${anchor}">${s.l}</text>`;
+    svg += `<text class="lbl" x="${x}" y="${y + dy}" text-anchor="${anchor}">${escT(s.n)}</text>`;
+    svg += `<text class="lbl-sub" x="${x}" y="${y + dy + 15}" text-anchor="${anchor}">${escT(s.l)}</text>`;
   });
   radar.innerHTML = svg;
+  radar.setAttribute("aria-label", "Skill radar: " + skills.map(s => `${s.n} ${s.l}`).join("; "));
 
   const tip = radar.parentElement.querySelector(".radar-tip");
   radar.querySelectorAll(".hit").forEach(h => {
@@ -434,6 +433,72 @@ async function renderPublications() {
 }
 renderPublications();
 
+// 11b) Site Settings (editable from the admin portal)
+const ICONS = {
+  python: "fa-brands fa-python", pytorch: "fa-solid fa-fire", tensorflow: "fa-solid fa-network-wired", xgboost: "fa-solid fa-chart-line",
+  django: "fa-solid fa-leaf", "django rest": "fa-solid fa-leaf", fastapi: "fa-solid fa-bolt", "spring boot": "fa-brands fa-java", java: "fa-brands fa-java",
+  react: "fa-brands fa-react", "node.js": "fa-brands fa-node-js", node: "fa-brands fa-node-js", javascript: "fa-brands fa-js", "java / javascript": "fa-brands fa-js",
+  typescript: "fa-brands fa-js", mysql: "fa-solid fa-database", postgresql: "fa-solid fa-server", mongodb: "fa-solid fa-database", redis: "fa-solid fa-layer-group",
+  websocket: "fa-solid fa-tower-broadcast", "jwt auth": "fa-solid fa-shield-halved", jwt: "fa-solid fa-shield-halved", git: "fa-brands fa-git-alt", github: "fa-brands fa-github",
+  html: "fa-brands fa-html5", css: "fa-brands fa-css3-alt", bootstrap: "fa-brands fa-bootstrap", docker: "fa-brands fa-docker", aws: "fa-brands fa-aws",
+  "machine learning": "fa-solid fa-brain", "c / c++": "fa-solid fa-c", "c++": "fa-solid fa-c", c: "fa-solid fa-c", linux: "fa-brands fa-linux",
+  excel: "fa-solid fa-table", "power bi": "fa-solid fa-chart-pie", tableau: "fa-solid fa-chart-pie", pandas: "fa-solid fa-table-cells", sql: "fa-solid fa-database",
+  gaming: "fa-solid fa-gamepad", aerospace: "fa-solid fa-rocket", cycling: "fa-solid fa-bicycle", leadership: "fa-solid fa-people-group",
+  "public speaking": "fa-solid fa-microphone", "event management": "fa-solid fa-calendar-check", teamwork: "fa-solid fa-handshake",
+};
+const iconFor = name => ICONS[String(name).toLowerCase()] || "fa-solid fa-circle-check";
+const setHtml = (id, html) => { const el = document.getElementById(id); if (el && html != null) el.innerHTML = html; };
+const inlineMd = t => md(t).replace(/^<p>|<\/p>\s*$/g, "");
+
+async function applySettings() {
+  const s = (await loadContent("settings"))[0];
+  if (!s) return;
+  if (Array.isArray(s.heroRoles) && s.heroRoles.filter(Boolean).length) roles = s.heroRoles.filter(Boolean);
+  if (s.heroIntro) setHtml("sHeroIntro", inlineMd(s.heroIntro));
+  setHtml("sHeroMeta", [["Currently", s.currently], ["Education", s.educationShort], ["Based in", s.basedIn]].filter(([, v]) => v).map(([k, v]) => `<div>${k}<b>${esc(v)}</b></div>`).join(""));
+  if (s.about) setHtml("sAbout", inlineMd(s.about).replace(/<strong>/g, '<strong style="color:#fff">'));
+  if (Array.isArray(s.stats) && s.stats.length) {
+    const projects = (await loadContent("projects")).length;
+    setHtml("sStats", s.stats.map(st => {
+      const v = st.auto === "projects" && projects ? projects : (+st.value || 0);
+      return `<li><span class="chk"><i class="fa-solid fa-check"></i></span><b class="count" data-end="${v}">0</b><span>${esc(st.label)}</span></li>`;
+    }).join(""));
+    document.querySelectorAll("#sStats .count").forEach(el => io.observe(el));
+  }
+  if (s.eduTitle) setHtml("sEduTitle", esc(s.eduTitle));
+  if (s.eduText) setHtml("sEduText", esc(s.eduText));
+  if (s.school != null) setHtml("sSchool", esc(s.school));
+  if (Array.isArray(s.interests)) setHtml("sInterests", s.interests.map(t => `<span class="chip"><i class="${iconFor(t)} me-2"></i>${esc(t)}</span>`).join(""));
+  if (Array.isArray(s.softSkills)) setHtml("sSoft", s.softSkills.map(t => `<span class="chip"><i class="${iconFor(t)} me-2"></i>${esc(t)}</span>`).join(""));
+  if (Array.isArray(s.tools)) setHtml("sTools", s.tools.map(t => `<div class="tech"><i class="${iconFor(t)}"></i>${esc(t)}</div>`).join(""));
+  if (s.aiming) setHtml("sAiming", esc(s.aiming));
+  if (Array.isArray(s.skills) && s.skills.length) {
+    drawRadar(s.skills);
+    const lv = [["Expert", 3], ["Advanced", 2], ["Intermediate", 1], ["Beginner", 0]];
+    setHtml("sLevels", lv.map(([name, n]) => {
+      const list = s.skills.filter(k => k.level === name);
+      if (!list.length) return "";
+      const dots = [0, 1, 2].map(i => `<i${i < n ? ' class="on"' : ""}></i>`).join("");
+      return `<div class="lvl"><span class="lvl-name"><span class="lvl-dots">${dots}</span>${name}</span><div class="chip-row">${list.map(k => `<span class="chip"><i class="${iconFor(k.name)} me-2"></i>${esc(k.name)}</span>`).join("")}</div></div>`;
+    }).join(""));
+  }
+  if (s.phone) { const a = document.getElementById("sPhone"); if (a) { a.textContent = s.phone; a.href = "tel:" + s.phone.replace(/[^\d+]/g, ""); } }
+  if (s.email) {
+    const a = document.getElementById("sEmail"); if (a) { a.textContent = s.email; a.href = "mailto:" + s.email; }
+    document.querySelectorAll('[data-s="mail"]').forEach(x => (x.href = "mailto:" + s.email));
+    CONTACT_EMAIL = s.email;
+  }
+  if (safeUrl(s.linkedin)) document.querySelectorAll('[data-s="linkedin"]').forEach(x => (x.href = s.linkedin));
+  if (safeUrl(s.github)) document.querySelectorAll('[data-s="github"]').forEach(x => (x.href = s.github));
+  if (safeUrl(s.cv)) document.querySelectorAll("[data-cv]").forEach(x => (x.href = s.cv));
+}
+let CONTACT_EMAIL = "yeasinfiyaz@gmail.com";
+drawRadar([
+  { name: "Python", level: "Expert" }, { name: "Django", level: "Advanced" }, { name: "Machine Learning", level: "Advanced" },
+  { name: "C / C++", level: "Intermediate" }, { name: "Java / JavaScript", level: "Advanced" },
+]);
+applySettings();
+
 // 12) Contact form => mailto
 const form = document.getElementById("contactForm");
 if (form) {
@@ -444,7 +509,7 @@ if (form) {
     const msg = document.getElementById("cMsg").value.trim();
     const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
     const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${msg}`);
-    window.location.href = `mailto:yeasinfiyaz@gmail.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
   });
 }
 

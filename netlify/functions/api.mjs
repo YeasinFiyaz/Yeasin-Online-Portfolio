@@ -1,62 +1,73 @@
-// Portfolio content API (Netlify Functions v2 + Netlify Blobs)
+// Portfolio admin API (Netlify Functions v2 + Netlify Blobs)
 //
-//   GET  /api/content/:type        public  -> JSON array (projects|awards|publications|blog|experience)
+//   GET  /api/content/:type        public  -> JSON array (projects|awards|publications|blog|experience|settings)
 //   PUT  /api/content/:type        admin   -> replace the whole array
-//   GET  /api/config               public  -> {googleClientId}
-//   POST /api/google               {credential} (Google ID token) -> {token, email, role}
+//   GET  /api/auth/status          public  -> {hasAccount}
+//   POST /api/auth/setup           {email, password} -> {token}   (only once, only the owner's email)
+//   POST /api/auth/login           {email, password} -> {token}
+//   POST /api/auth/password        admin   {current, next} -> {token}
 //   GET  /api/me                   admin   -> {email, role}
 //   POST /api/media                admin   raw image body -> {url}
 //   GET  /api/media/:key           public  -> the image
 //
-// Sign-in is "Sign in with Google". Only allowed Google accounts get in:
-//   SUPERADMIN (always): yeasinfiyaz@gmail.com
-//   ADMIN_EMAILS (optional env, comma separated): extra editors
-// Netlify environment variables:
-//   GOOGLE_CLIENT_ID     the OAuth Web client ID from Google Cloud (public value)
-//   TOKEN_SECRET         long random string used to sign editor sessions (secret)
+// Environment variable (Netlify, never in git):
+//   TOKEN_SECRET   long random string used to sign admin sessions
+// The admin password is stored only as a scrypt hash in the "portfolio-auth" blob store.
 import { getStore } from "@netlify/blobs";
-import { timingSafeEqual, createHmac, randomBytes } from "node:crypto";
+import { scryptSync, timingSafeEqual, createHmac, randomBytes } from "node:crypto";
 
-const SUPERADMIN = "yeasinfiyaz@gmail.com";
-
-const TYPES = new Set(["projects", "awards", "publications", "blog", "experience"]);
-const MAX_JSON = 2 * 1024 * 1024;          // 2 MB per content type
-const MAX_MEDIA = 8 * 1024 * 1024;         // 8 MB per image
+const OWNER = "yeasinfiyaz@gmail.com";       // the only account that can be the admin
+const TYPES = new Set(["projects", "awards", "publications", "blog", "experience", "settings"]);
+const MAX_JSON = 2 * 1024 * 1024;            // 2 MB per content type
+const MAX_MEDIA = 8 * 1024 * 1024;           // 8 MB per image
 const IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"]);
-const TOKEN_HOURS = 12;
+const TOKEN_DAYS = 7;
+const LIMIT = 8;                             // failed attempts per IP ...
+const WINDOW_MS = 15 * 60 * 1000;            // ... per 15 minutes
 
 const json = (data, status = 200, extra = {}) =>
   new Response(JSON.stringify(data), {
     status,
     headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store", ...extra },
   });
-
 const b64url = buf => Buffer.from(buf).toString("base64url");
+const readBody = async req => { try { return await req.json(); } catch { return {}; } };
+const normEmail = e => String(e || "").trim().toLowerCase();
 
-/* ---------- who may edit ---------- */
-const allowed = () => new Set([SUPERADMIN, ...String(process.env.ADMIN_EMAILS || "").split(",")].map(e => e.trim().toLowerCase()).filter(Boolean));
-const roleOf = email => (email === SUPERADMIN ? "superadmin" : "admin");
-
-/* ---------- editor sessions (signed, 12 hours) ---------- */
-function sign(email) {
-  const body = b64url(JSON.stringify({ email, exp: Date.now() + TOKEN_HOURS * 3600 * 1000, n: b64url(randomBytes(9)) }));
-  return `${body}.${createHmac("sha256", process.env.TOKEN_SECRET).update(body).digest("base64url")}`;
+/* ---------- account (hashed password in Blobs) ---------- */
+const authStore = () => getStore("portfolio-auth");
+const getAccount = async () => (await authStore().get("account", { type: "json" })) || null;   // {email, hash, gen}
+const hashPw = pw => { const salt = randomBytes(16); return `scrypt$${salt.toString("hex")}$${scryptSync(pw, salt, 32).toString("hex")}`; };
+function matches(pw, stored) {
+  const [algo, saltHex, hashHex] = String(stored || "").split("$");
+  if (algo !== "scrypt" || !saltHex || !hashHex || typeof pw !== "string" || !pw) return false;
+  const want = Buffer.from(hashHex, "hex");
+  return timingSafeEqual(scryptSync(pw, Buffer.from(saltHex, "hex"), want.length), want);
 }
-function session(req) {
+const validPw = pw => typeof pw === "string" && pw.length >= 8 && pw.length <= 200;
+
+/* ---------- sessions: signed with TOKEN_SECRET + account generation,
+   so changing the password signs out every other device ---------- */
+const keyFor = acc => `${process.env.TOKEN_SECRET}|${acc.gen}`;
+function sign(acc) {
+  const body = b64url(JSON.stringify({ email: acc.email, exp: Date.now() + TOKEN_DAYS * 86400 * 1000, n: b64url(randomBytes(9)) }));
+  return `${body}.${createHmac("sha256", keyFor(acc)).update(body).digest("base64url")}`;
+}
+async function session(req) {
   const token = (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
   if (!token || !process.env.TOKEN_SECRET) return null;
   const [body, mac] = token.split(".");
   if (!body || !mac) return null;
-  const good = createHmac("sha256", process.env.TOKEN_SECRET).update(body).digest();
+  const acc = await getAccount();
+  if (!acc) return null;
+  const good = createHmac("sha256", keyFor(acc)).update(body).digest();
   const given = Buffer.from(mac, "base64url");
   if (given.length !== good.length || !timingSafeEqual(given, good)) return null;
   try {
     const p = JSON.parse(Buffer.from(body, "base64url").toString());
-    // still on the allow-list and not expired
-    return p.exp > Date.now() && allowed().has(p.email) ? p : null;
+    return p.exp > Date.now() && p.email === acc.email ? acc : null;
   } catch { return null; }
 }
-const isAdmin = req => !!session(req);
 
 // Same-origin check for write requests (blocks cross-site form posts)
 function sameOrigin(req) {
@@ -65,42 +76,71 @@ function sameOrigin(req) {
   try { return new URL(origin).host === new URL(req.url).host; } catch { return false; }
 }
 
-/* ---------- Google sign-in: verify the ID token with Google ---------- */
-async function googleLogin(req) {
-  const clientId = process.env.GOOGLE_CLIENT_ID;
-  if (!clientId) return json({ error: "Google sign-in is not configured yet." }, 503);
-  let body = {};
-  try { body = await req.json(); } catch {}
-  const cred = String(body.credential || "");
-  if (!/^[\w-]+\.[\w-]+\.[\w-]+$/.test(cred)) return json({ error: "Invalid sign-in response" }, 400);
-  const r = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(cred)}`);
-  if (!r.ok) return json({ error: "Google could not confirm this sign-in. Please try again." }, 401);
-  const info = await r.json();
-  const email = String(info.email || "").toLowerCase();
-  const ok = info.aud === clientId
-    && ["accounts.google.com", "https://accounts.google.com"].includes(info.iss)
-    && (info.email_verified === true || info.email_verified === "true")
-    && Number(info.exp) * 1000 > Date.now();
-  if (!ok) return json({ error: "Google could not confirm this sign-in. Please try again." }, 401);
-  if (!allowed().has(email)) return json({ error: `${email} is not allowed to edit this portfolio.` }, 403);
-  return json({ token: sign(email), email, role: roleOf(email) });
+/* ---------- brute-force protection (per IP) ---------- */
+async function limiter(req, context) {
+  const ip = context.ip || req.headers.get("x-nf-client-connection-ip") || "unknown";
+  const key = `fail-${ip.replace(/[^a-zA-Z0-9.:-]/g, "_")}`;
+  const now = Date.now();
+  const rec = (await authStore().get(key, { type: "json" })) || { n: 0, t: now };
+  if (now - rec.t > WINDOW_MS) { rec.n = 0; rec.t = now; }
+  return {
+    blocked: rec.n >= LIMIT,
+    fail: async () => { rec.n += 1; await authStore().setJSON(key, rec); await new Promise(r => setTimeout(r, 600)); },
+    clear: () => authStore().delete(key),
+  };
+}
+const tooMany = () => json({ error: "Too many attempts. Please wait 15 minutes and try again." }, 429);
+
+async function auth(action, req, context) {
+  if (action === "status") return json({ hasAccount: !!(await getAccount()) });
+
+  if (!sameOrigin(req)) return json({ error: "Bad origin" }, 403);
+  const lim = await limiter(req, context);
+  if (lim.blocked) return tooMany();
+  const body = await readBody(req);
+
+  if (action === "setup") {
+    if (await getAccount()) return json({ error: "The admin account already exists. Please sign in." }, 409);
+    if (normEmail(body.email) !== OWNER) { await lim.fail(); return json({ error: "Only the portfolio owner's email can create the admin account." }, 403); }
+    if (!validPw(body.password)) return json({ error: "Use a password of at least 8 characters." }, 400);
+    const acc = { email: OWNER, hash: hashPw(body.password), gen: b64url(randomBytes(9)), created: new Date().toISOString() };
+    await authStore().setJSON("account", acc);
+    await lim.clear();
+    return json({ token: sign(acc), email: acc.email, role: "superadmin" });
+  }
+
+  if (action === "login") {
+    const acc = await getAccount();
+    if (!acc) return json({ error: "No admin account yet. Create it first." }, 409);
+    if (normEmail(body.email) !== acc.email || !matches(body.password, acc.hash)) { await lim.fail(); return json({ error: "Wrong email or password" }, 401); }
+    await lim.clear();
+    return json({ token: sign(acc), email: acc.email, role: "superadmin" });
+  }
+
+  if (action === "password") {
+    const acc = await session(req);
+    if (!acc) return json({ error: "Not signed in" }, 401);
+    if (!matches(body.current, acc.hash)) { await lim.fail(); return json({ error: "Your current password is not correct" }, 400); }
+    if (!validPw(body.next)) return json({ error: "Use a new password of at least 8 characters." }, 400);
+    const next = { ...acc, hash: hashPw(body.next), gen: b64url(randomBytes(9)), changed: new Date().toISOString() };
+    await authStore().setJSON("account", next);
+    await lim.clear();
+    return json({ token: sign(next) });
+  }
+  return json({ error: "Not found" }, 404);
 }
 
 export default async (req, context) => {
   const url = new URL(req.url);
-  const parts = url.pathname.replace(/^\/api\/?/, "").split("/").filter(Boolean);
-  const [route, arg] = parts;
+  const [route, arg] = url.pathname.replace(/^\/api\/?/, "").split("/").filter(Boolean);
   const method = req.method;
 
   try {
-    if (route === "config" && method === "GET") return json({ googleClientId: process.env.GOOGLE_CLIENT_ID || "" });
-    if (route === "google" && method === "POST") {
-      if (!sameOrigin(req)) return json({ error: "Bad origin" }, 403);
-      return await googleLogin(req);
-    }
+    if (route === "auth" && (method === "POST" || arg === "status")) return await auth(arg, req, context);
+
     if (route === "me" && method === "GET") {
-      const s = session(req);
-      return s ? json({ email: s.email, role: roleOf(s.email) }) : json({ error: "Not signed in" }, 401);
+      const acc = await session(req);
+      return acc ? json({ email: acc.email, role: "superadmin" }) : json({ error: "Not signed in" }, 401);
     }
 
     if (route === "content" && TYPES.has(arg)) {
@@ -111,7 +151,7 @@ export default async (req, context) => {
         return json(data, 200, { "cache-control": "public, max-age=0, must-revalidate" });
       }
       if (method === "PUT") {
-        if (!isAdmin(req)) return json({ error: "Not signed in" }, 401);
+        if (!(await session(req))) return json({ error: "Not signed in" }, 401);
         if (!sameOrigin(req)) return json({ error: "Bad origin" }, 403);
         const text = await req.text();
         if (text.length > MAX_JSON) return json({ error: "Too large" }, 413);
@@ -129,7 +169,7 @@ export default async (req, context) => {
     if (route === "media") {
       const store = getStore("portfolio-media");
       if (method === "POST" && !arg) {
-        if (!isAdmin(req)) return json({ error: "Not signed in" }, 401);
+        if (!(await session(req))) return json({ error: "Not signed in" }, 401);
         if (!sameOrigin(req)) return json({ error: "Bad origin" }, 403);
         const type = (req.headers.get("content-type") || "").split(";")[0].trim().toLowerCase();
         if (!IMAGE_TYPES.has(type)) return json({ error: "Only JPG, PNG, WEBP, GIF or AVIF images" }, 415);
