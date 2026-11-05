@@ -15,6 +15,38 @@
     "featured": true
   },
   {
+    "title": "Nationalist Research Foundation (NRF) — bdnrf.com",
+    "period": "2026 – Present",
+    "short": "Built and run solo: the official bilingual (English/Bangla) platform of a national research foundation. 7 research sectors, publications & video archives, full admin newsroom with editor workflow, and a custom CMS — deployed on Cloudflare with its own domain.",
+    "tags": [
+      "Solo Project",
+      "Full-Stack",
+      "CMS",
+      "Cloudflare",
+      "EN / BN"
+    ],
+    "github": "",
+    "demo": "https://bdnrf.com/",
+    "image": "./assets/img/proj-nrf.jpg",
+    "featured": true
+  },
+  {
+    "title": "EnergyWatch — 24/7 Energy News & Tender Watcher",
+    "period": "2026 – Present",
+    "short": "Internal platform I built for ESB Power Line: watches 77 news portals and e-GP around the clock for power-sector news, government tenders and press releases, with live alerts, smart classification, Excel/Word report exports and a bilingual UI.",
+    "tags": [
+      "Node.js",
+      "SQLite",
+      "Scraping",
+      "Automation",
+      "Internal Tool"
+    ],
+    "github": "",
+    "demo": "",
+    "image": "./assets/img/proj-energywatch.jpg",
+    "featured": true
+  },
+  {
     "title": "Multimodal Deep Learning for Predicting Mechanical Ventilation Duration",
     "period": "Jan 2025 – Feb 2026",
     "short": "Undergraduate thesis supervised by Dr. Swakkhar Shatabda: a multimodal model that combines chest X-rays with clinical data to predict how long a patient will need mechanical ventilation.",
